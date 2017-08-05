@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+						
+						
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass" value="org.mariadb.jdbc.Driver" />
+		<property name="url" value="jdbc:mariadb://ec2-13-124-151-188.ap-northeast-2.compute.amazonaws.com:3306/test_db?characterEncoding=UTF-8" />
+		<property name="username" value="test" />
+		<property name="password" value="123qwe!@" />
+	</bean>
+	
+	<bean id="userDao" class="springbook.dao.UserDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+</beans>
