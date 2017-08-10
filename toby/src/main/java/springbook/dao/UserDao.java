@@ -15,25 +15,18 @@ public class UserDao {
 	
 	private JdbcContext jdbcContext;
 	
-	public void setJdbcContext(JdbcContext jdbcContext) {
-		this.jdbcContext = jdbcContext;
-	}
-
 	private DataSource dataSource;
 
 	public void setDataSource(DataSource dataSource) {
+		this.jdbcContext = new JdbcContext();
+		this.jdbcContext.setDataSource(dataSource);
 		this.dataSource = dataSource;
 	}
 
 	public void deleteAll() throws SQLException {
-		jdbcContext.workWithStatementStrategy(new StatementStrategy() {
-			public PreparedStatement makePreparedStatement(Connection c)
-					throws SQLException {
-				return c.prepareStatement("delete from users");
-			}
-		});
+		this.jdbcContext.executeSql("delete from users");
 	}
-	
+
 	public void add(final User user) throws SQLException {
 		jdbcContext.workWithStatementStrategy(new StatementStrategy() {
 			public PreparedStatement makePreparedStatement(Connection c)
@@ -88,4 +81,7 @@ public class UserDao {
 
 		return count;
 	}
+
+	
+	
 }
