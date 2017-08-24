@@ -42,7 +42,7 @@ public class UserDaoTest {
 	}
 	
 	@Test 
-	public void andAndGet() throws SQLException {		
+	public void andAndGet(){		
 		dao.deleteAll();
 		assertThat(dao.getCount(), is(0));
 
@@ -60,7 +60,7 @@ public class UserDaoTest {
 	}
 
 	@Test(expected=EmptyResultDataAccessException.class)
-	public void getUserFailure() throws SQLException {
+	public void getUserFailure(){
 		dao.deleteAll();
 		assertThat(dao.getCount(), is(0));
 		
@@ -69,7 +69,7 @@ public class UserDaoTest {
 
 	
 	@Test
-	public void count() throws SQLException {
+	public void count(){
 		dao.deleteAll();
 		assertThat(dao.getCount(), is(0));
 				
@@ -84,7 +84,7 @@ public class UserDaoTest {
 	}
 	
 	@Test
-	public void getAll() throws SQLException{
+	public void getAll(){
 		dao.deleteAll();
 		
 		List<User> users0 = dao.getAll();
