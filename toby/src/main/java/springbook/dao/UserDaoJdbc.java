@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import springbook.domain.User;
 
-public class UserDao {
+public class UserDaoJdbc implements UserDao{
 	
 	private JdbcTemplate jdbcTemplate;
 

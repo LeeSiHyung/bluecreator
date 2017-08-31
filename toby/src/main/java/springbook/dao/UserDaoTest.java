@@ -3,7 +3,6 @@ package springbook.dao;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.Before;
@@ -25,7 +24,7 @@ public class UserDaoTest {
 	@Autowired
 	ApplicationContext context;
 	
-	private UserDao dao; 
+	private UserDaoJdbc dao; 
 	
 	private User user1;
 	private User user2;
@@ -33,7 +32,7 @@ public class UserDaoTest {
 	
 	@Before
 	public void setUp() {
-		this.dao = this.context.getBean("userDao", UserDao.class);
+		this.dao = this.context.getBean("userDao", UserDaoJdbc.class);
 		
 		this.user1 = new User("gyumee", "이시형", "springno1");
 		this.user2 = new User("leegw700", "류기연", "springno2");
