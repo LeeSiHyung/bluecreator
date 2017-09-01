@@ -21,6 +21,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import springbook.domain.Level;
 import springbook.domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,9 +44,9 @@ public class UserDaoTest {
 	public void setUp() {
 		this.dao = this.context.getBean("userDao", UserDaoJdbc.class);
 		
-		this.user1 = new User("gyumee", "이시형", "springno1");
-		this.user2 = new User("leegw700", "류기연", "springno2");
-		this.user3 = new User("bumjin", "이진운", "springno3");
+		this.user1 = new User("gyumee", "이시형", "springno1", Level.BASIC, 1, 0);
+		this.user2 = new User("leegw700", "류기연", "springno2", Level.SILVER, 55, 10);
+		this.user3 = new User("bumjin", "이진운", "springno3", Level.GOLD, 100, 40);
 
 	}
 	
@@ -59,12 +60,10 @@ public class UserDaoTest {
 		assertThat(dao.getCount(), is(2));
 		
 		User userget1 = dao.get(user1.getId());
-		assertThat(userget1.getName(), is(user1.getName()));
-		assertThat(userget1.getPassword(), is(user1.getPassword()));
+		checkSameUser(userget1, user1);
 		
 		User userget2 = dao.get(user2.getId());
-		assertThat(userget2.getName(), is(user2.getName()));
-		assertThat(userget2.getPassword(), is(user2.getPassword()));
+		checkSameUser(userget2, user2);
 	}
 
 	@Test(expected=EmptyResultDataAccessException.class)
@@ -116,14 +115,6 @@ public class UserDaoTest {
 		checkSameUser(user1, users3.get(1));
 		checkSameUser(user2, users3.get(2));
 	}
-
-	// User 오브젝트의 내용을 비교하는 검증 코드, 테스트내에서 반복적으로 사용되므로 분리
-	private void checkSameUser(User user1, User user2) {
-		assertThat(user1.getId(), is(user2.getId()));
-		assertThat(user1.getName(), is(user2.getName()));
-		assertThat(user1.getPassword(), is(user2.getPassword()));
-	}
-	
 	
 	//@Test(expected=DataAccessException.class)
 	@Test(expected=DuplicateKeyException.class)
@@ -147,5 +138,14 @@ public class UserDaoTest {
 		}
 		
 	}
-	
+
+	// User 오브젝트의 내용을 비교하는 검증 코드, 테스트내에서 반복적으로 사용되므로 분리
+	private void checkSameUser(User user1, User user2) {
+		assertThat(user1.getId(), is(user2.getId()));
+		assertThat(user1.getName(), is(user2.getName()));
+		assertThat(user1.getPassword(), is(user2.getPassword()));
+		assertThat(user1.getLevel(), is(user2.getLevel()));
+		assertThat(user1.getLogin(), is(user2.getLogin()));
+		assertThat(user1.getRecommend(), is(user2.getRecommend()));
+	}
 }
