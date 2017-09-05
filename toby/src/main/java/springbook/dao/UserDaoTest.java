@@ -3,7 +3,6 @@ package springbook.dao;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -15,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
-import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -31,7 +28,7 @@ public class UserDaoTest {
 	@Autowired
 	ApplicationContext context;
 	
-	private UserDaoJdbc dao; 
+	private UserDao dao; 
 	
 	@Autowired
 	DataSource dataSource;
@@ -48,6 +45,17 @@ public class UserDaoTest {
 		this.user2 = new User("leegw700", "류기연", "springno2", Level.SILVER, 55, 10);
 		this.user3 = new User("bumjin", "이진운", "springno3", Level.GOLD, 100, 40);
 
+	}
+	
+
+	// User 오브젝트의 내용을 비교하는 검증 코드, 테스트내에서 반복적으로 사용되므로 분리
+	private void checkSameUser(User user1, User user2) {
+		assertThat(user1.getId(), is(user2.getId()));
+		assertThat(user1.getName(), is(user2.getName()));
+		assertThat(user1.getPassword(), is(user2.getPassword()));
+		assertThat(user1.getLevel(), is(user2.getLevel()));
+		assertThat(user1.getLogin(), is(user2.getLogin()));
+		assertThat(user1.getRecommend(), is(user2.getRecommend()));
 	}
 	
 	@Test 
@@ -134,21 +142,34 @@ public class UserDaoTest {
 	// 		dao.add(user1);
 	// 		dao.add(user1);
 	// 	}catch(DuplicateKeyException ex){
-			/** rootCause를 가져와 형변환 한다. **/
+	// 	/** rootCause를 가져와 형변환 한다. **/
 	// 		SQLException sqlEx = (SQLException) ex.getRootCause(); // 
 	// 		SQLExceptionTranslator set = new SQLErrorCodeSQLExceptionTranslator(this.dataSource);
 	// 		assertThat(set.translate(null, null, sqlEx), is(DuplicateKeyException.class));
 	// 	}
 	// 	
 	// }
-
-	// User 오브젝트의 내용을 비교하는 검증 코드, 테스트내에서 반복적으로 사용되므로 분리
-	private void checkSameUser(User user1, User user2) {
-		assertThat(user1.getId(), is(user2.getId()));
-		assertThat(user1.getName(), is(user2.getName()));
-		assertThat(user1.getPassword(), is(user2.getPassword()));
-		assertThat(user1.getLevel(), is(user2.getLevel()));
-		assertThat(user1.getLogin(), is(user2.getLogin()));
-		assertThat(user1.getRecommend(), is(user2.getRecommend()));
+	
+	@Test
+	public void update(){
+		dao.deleteAll();
+		
+		dao.add(user1);
+		dao.add(user2);
+		
+		user1.setName("오민규");
+		user1.setPassword("springno6");
+		user1.setLevel(Level.GOLD);
+		user1.setLogin(1000);
+		user1.setRecommend(999);
+		dao.update(user1);
+		
+		User user1update = dao.get(user1.getId());
+		checkSameUser(user1, user1update);
+		
+		User user2same = dao.get(user2.getId());
+		checkSameUser(user2, user2same);
+		
 	}
+
 }
