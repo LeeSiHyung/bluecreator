@@ -71,11 +71,6 @@ public class UserDaoTest {
 		assertThat(user1.getRecommend(), is(user2.getRecommend()));
 	}
 	
-	private void checkLevel(User user, Level expectedLevel){
-		User userUpdate = dao.get(user.getId());
-		assertThat(userUpdate.getLevel(), is(expectedLevel));
-	}
-	
 	@Test 
 	public void andAndGet(){		
 		dao.deleteAll();
@@ -203,6 +198,22 @@ public class UserDaoTest {
 		checkLevel(users.get(2), Level.SILVER);
 		checkLevel(users.get(3), Level.GOLD);
 		checkLevel(users.get(4), Level.GOLD);
+	}
+	
+	
+	private void checkLevel(User user, Level expectedLevel){
+		User userUpdate = dao.get(user.getId());
+		assertThat(userUpdate.getLevel(), is(expectedLevel));
+	}
+	
+	// upraded : 다음레벨로 업그레이드가 될것인가 아닌가를 지정
+	private void checkLevelUpgraded(User user, boolean upgraded){
+		User userUpdate = dao.get(user.getId());
+		if(upgraded){
+			// 업그레이드가 일어났는지 확인
+			assertThat(userUpdate.getLevel(), is(user.getLevel().nextLevel()));
+		}
+		
 	}
 	
 	@Test
