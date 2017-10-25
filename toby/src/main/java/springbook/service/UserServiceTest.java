@@ -21,7 +21,6 @@ public class UserServiceTest {
 	
 	@Test
 	public void bean(){
-		
 		assertThat(this.userService, is(notNullValue()));
 	}
 

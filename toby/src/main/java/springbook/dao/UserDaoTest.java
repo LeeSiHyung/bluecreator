@@ -2,6 +2,9 @@ package springbook.dao;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static springbook.service.UserService.MIN_LOGOUT_FOR_SILVER;
+import static springbook.service.UserService.MIN_RECOMMEND_FOR_GOLD;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,9 +25,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import springbook.domain.Level;
 import springbook.domain.User;
 import springbook.service.UserService;
-
-import static springbook.service.UserService.MIN_LOGOUT_FOR_SILVER;
-import static springbook.service.UserService.MIN_RECOMMEND_FOR_GOLD;
+import springbook.service.UserService.TestUserService;
+import springbook.service.UserService.TestUserServiceException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="/test-applicationContext.xml")
@@ -188,7 +190,7 @@ public class UserDaoTest {
 	}
 	
 	@Test
-	public void upgradeLevels(){
+	public void upgradeLevels() throws Exception{
 		dao.deleteAll();
 		for(User user : users){
 			dao.add(user);
@@ -245,4 +247,26 @@ public class UserDaoTest {
 		assertThat(userWithoutLevelRead.getLevel(), is(Level.BASIC));
 	}
 
+	@Test
+	public void upgradeAllOrNothing() throws Exception{
+		
+		UserService testUserService = new TestUserService(users.get(3).getId());
+		testUserService.setUserDao(this.dao);
+		testUserService.setDataSource(dataSource);
+		
+		dao.deleteAll();
+		for(User user : users){
+			dao.add(user);
+		}
+		
+		try{
+			testUserService.upgradeLevels();
+			fail("TestUserServiceException expected");
+		}
+		catch(TestUserServiceException e){
+			
+		}
+		
+		checkLevelUpgraded(users.get(1), false);
+	}
 }
