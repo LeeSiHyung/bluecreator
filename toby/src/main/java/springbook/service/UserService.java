@@ -1,13 +1,13 @@
 package springbook.service;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import springbook.dao.UserDao;
 import springbook.domain.Level;
@@ -30,11 +30,16 @@ public class UserService {
 	
 	public void upgradeLevels() throws Exception{
 		
-		TransactionSynchronizationManager.initSynchronization();
+		/** 로컬 JDBC 트랜잭션을 사용하는 경우 **/
+		//TransactionSynchronizationManager.initSynchronization();
 		// Connection을 dataSouce에서 생성하지 않는 이유는 
 		// DataSourceUtils.getConnection() 메소드는 트랜잭션 동기화에 사용하도록 저장소에 바인딩을 해주기 때문
-		Connection c = DataSourceUtils.getConnection(dataSource);
-		c.setAutoCommit(false);
+		//Connection c = DataSourceUtils.getConnection(dataSource);
+		//c.setAutoCommit(false);
+		
+		/** 스프링의 트랜잭션 추상화 계층을 사용하는 경우 **/
+		PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
+		TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
 		
 		try{
 			
@@ -44,17 +49,27 @@ public class UserService {
 					upgradeLevel(user);
 				}
 			}
-			c.commit();
+			/** 로컬 JDBC 트랜잭션을 사용하는 경우 **/
+			//c.commit();
+			
+			/** 스프링의 트랜잭션 추상화 계층을 사용하는 경우 **/
+			transactionManager.commit(status);
 			
 		}catch(Exception e){
-			c.rollback();
+			/** 로컬 JDBC 트랜잭션을 사용하는 경우 **/
+			//c.rollback();
+			
+			/** 스프링의 트랜잭션 추상화 계층을 사용하는 경우 **/
+			transactionManager.rollback(status);
+			
 			throw e;
 			
 		}finally{
+			/** 로컬 JDBC 트랜잭션을 사용하는 경우 **/
 			// DataSourceUtils를 통해 DB Connection을 닫음
-			DataSourceUtils.releaseConnection(c, dataSource);
-			TransactionSynchronizationManager.unbindResource(dataSource);
-			TransactionSynchronizationManager.clearSynchronization();
+			//DataSourceUtils.releaseConnection(c, dataSource);
+			//TransactionSynchronizationManager.unbindResource(dataSource);
+			//TransactionSynchronizationManager.clearSynchronization();
 		}
 	
 	}
