@@ -21,6 +21,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import springbook.domain.Level;
 import springbook.domain.User;
@@ -40,6 +41,9 @@ public class UserDaoTest {
 	@Autowired
 	DataSource dataSource;
 	
+	@Autowired
+	PlatformTransactionManager transactionManager;
+	
 	private User user1;
 	private User user2;
 	private User user3;
@@ -52,16 +56,16 @@ public class UserDaoTest {
 	public void setUp() {
 		this.dao = this.context.getBean("userDao", UserDaoJdbc.class);
 		
-		this.user1 = new User("gyumee", "이시형", "springno1", Level.BASIC, 1, 0);
-		this.user2 = new User("leegw700", "류기연", "springno2", Level.SILVER, 55, 10);
-		this.user3 = new User("bumjin", "이진운", "springno3", Level.GOLD, 100, 40);
+		this.user1 = new User("gyumee", "이시형", "springno1", "dltlgud1324@naver.com", Level.BASIC, 1, 0);
+		this.user2 = new User("leegw700", "류기연", "springno2", "dltlgud1324@naver.com",Level.SILVER, 55, 10);
+		this.user3 = new User("bumjin", "이진운", "springno3", "dltlgud1324@naver.com",Level.GOLD, 100, 40);
 		
 		users = Arrays.asList(
-				new User("bumjin", "박범진", "p1", Level.BASIC, MIN_LOGOUT_FOR_SILVER - 1, 0),
-				new User("joytouch", "강명성", "p2", Level.BASIC, MIN_LOGOUT_FOR_SILVER, 0),
-				new User("erwins", "신승한", "p3", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD - 1),
-				new User("madnite1", "이상호", "p4", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD),
-				new User("green", "오민규", "p5", Level.GOLD, 100, 100)
+				new User("bumjin", "박범진", "p1", "dltlgud1324@naver.com", Level.BASIC, MIN_LOGOUT_FOR_SILVER - 1, 0),
+				new User("joytouch", "강명성", "p2", "dltlgud1324@naver.com", Level.BASIC, MIN_LOGOUT_FOR_SILVER, 0),
+				new User("erwins", "신승한", "p3", "dltlgud1324@naver.com", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD - 1),
+				new User("madnite1", "이상호", "p4", "dltlgud1324@naver.com", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD),
+				new User("green", "오민규", "p5", "dltlgud1324@naver.com", Level.GOLD, 100, 100)
 				);
 	}
 	
@@ -71,6 +75,7 @@ public class UserDaoTest {
 		assertThat(user1.getId(), is(user2.getId()));
 		assertThat(user1.getName(), is(user2.getName()));
 		assertThat(user1.getPassword(), is(user2.getPassword()));
+		assertThat(user1.getEmail(), is(user2.getEmail()));
 		assertThat(user1.getLevel(), is(user2.getLevel()));
 		assertThat(user1.getLogin(), is(user2.getLogin()));
 		assertThat(user1.getRecommend(), is(user2.getRecommend()));
@@ -252,7 +257,8 @@ public class UserDaoTest {
 		
 		UserService testUserService = new TestUserService(users.get(3).getId());
 		testUserService.setUserDao(this.dao);
-		testUserService.setDataSource(dataSource);
+		//testUserService.setDataSource(dataSource);
+		testUserService.setTransactionManager(transactionManager);
 		
 		dao.deleteAll();
 		for(User user : users){
