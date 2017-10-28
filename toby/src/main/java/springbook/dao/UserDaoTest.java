@@ -56,16 +56,16 @@ public class UserDaoTest {
 	public void setUp() {
 		this.dao = this.context.getBean("userDao", UserDaoJdbc.class);
 		
-		this.user1 = new User("gyumee", "이시형", "springno1", "dltlgud1324@naver.com", Level.BASIC, 1, 0);
-		this.user2 = new User("leegw700", "류기연", "springno2", "dltlgud1324@naver.com",Level.SILVER, 55, 10);
-		this.user3 = new User("bumjin", "이진운", "springno3", "dltlgud1324@naver.com",Level.GOLD, 100, 40);
+		this.user1 = new User("gyumee", "이시형", "springno1", "dltlgud1324@oniontech.com", Level.BASIC, 1, 0);
+		this.user2 = new User("leegw700", "류기연", "springno2", "dltlgud1324@oniontech.com",Level.SILVER, 55, 10);
+		this.user3 = new User("bumjin", "이진운", "springno3", "dltlgud1324@oniontech.com",Level.GOLD, 100, 40);
 		
 		users = Arrays.asList(
-				new User("bumjin", "박범진", "p1", "dltlgud1324@naver.com", Level.BASIC, MIN_LOGOUT_FOR_SILVER - 1, 0),
-				new User("joytouch", "강명성", "p2", "dltlgud1324@naver.com", Level.BASIC, MIN_LOGOUT_FOR_SILVER, 0),
-				new User("erwins", "신승한", "p3", "dltlgud1324@naver.com", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD - 1),
-				new User("madnite1", "이상호", "p4", "dltlgud1324@naver.com", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD),
-				new User("green", "오민규", "p5", "dltlgud1324@naver.com", Level.GOLD, 100, 100)
+				new User("bumjin", "박범진", "p1", "dltlgud1324@oniontech.com", Level.BASIC, MIN_LOGOUT_FOR_SILVER - 1, 0),
+				new User("joytouch", "강명성", "p2", "dltlgud1324@oniontech.com", Level.BASIC, MIN_LOGOUT_FOR_SILVER, 0),
+				new User("erwins", "신승한", "p3", "dltlgud1324@oniontech.com", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD - 1),
+				new User("madnite1", "이상호", "p4", "dltlgud1324@oniontech.com", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD),
+				new User("green", "오민규", "p5", "dltlgud1324@oniontech.com", Level.GOLD, 100, 100)
 				);
 	}
 	
