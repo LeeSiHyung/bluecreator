@@ -17,7 +17,7 @@ import static org.junit.Assert.assertThat;
 public class UserServiceTest {
 	
 	@Autowired
-	UserService userService;
+	UserServiceImpl userService;
 	
 	@Test
 	public void bean(){

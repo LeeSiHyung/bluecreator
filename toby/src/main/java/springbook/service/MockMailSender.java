@@ -1,0 +1,30 @@
+package springbook.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+
+public class MockMailSender implements MailSender{
+	
+	private List<String> requests = new ArrayList<String>();
+
+	@Override
+	public void send(SimpleMailMessage mailSender) throws MailException {
+		requests.add(mailSender.getTo()[0]);
+		
+	}
+
+	@Override
+	public void send(SimpleMailMessage[] arg0) throws MailException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List<String> getRequests() {
+		return requests;
+	}
+
+}

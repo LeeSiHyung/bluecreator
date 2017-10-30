@@ -3,8 +3,8 @@ package springbook.dao;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static springbook.service.UserService.MIN_LOGOUT_FOR_SILVER;
-import static springbook.service.UserService.MIN_RECOMMEND_FOR_GOLD;
+import static springbook.service.UserServiceImpl.MIN_LOGOUT_FOR_SILVER;
+import static springbook.service.UserServiceImpl.MIN_RECOMMEND_FOR_GOLD;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.mail.MailSender;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -25,9 +26,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import springbook.domain.Level;
 import springbook.domain.User;
+import springbook.service.MockMailSender;
 import springbook.service.UserService;
-import springbook.service.UserService.TestUserService;
-import springbook.service.UserService.TestUserServiceException;
+import springbook.service.UserServiceImpl;
+import springbook.service.UserServiceImpl.TestUserService;
+import springbook.service.UserServiceImpl.TestUserServiceException;
+import springbook.service.UserServiceTx;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="/test-applicationContext.xml")
@@ -42,6 +46,9 @@ public class UserDaoTest {
 	DataSource dataSource;
 	
 	@Autowired
+	MailSender mailSender;
+	
+	@Autowired
 	PlatformTransactionManager transactionManager;
 	
 	private User user1;
@@ -51,6 +58,9 @@ public class UserDaoTest {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	UserServiceImpl userServiceImpl;
 	
 	@Before
 	public void setUp() {
@@ -195,11 +205,34 @@ public class UserDaoTest {
 	}
 	
 	@Test
+	public void add(){
+		dao.deleteAll();
+		
+		User userWithLevel = users.get(4);
+		User userWithoutLevel = users.get(0);
+		userWithoutLevel.setLevel(null);
+		
+		userService.add(userWithLevel);
+		userService.add(userWithoutLevel);
+		
+		User userWithLevelRead = dao.get(userWithLevel.getId());
+		User userWithoutLevelRead = dao.get(userWithoutLevel.getId());
+		
+		assertThat(userWithLevelRead.getLevel(), is(userWithLevel.getLevel()));
+		assertThat(userWithoutLevelRead.getLevel(), is(Level.BASIC));
+	}
+	
+	
+	@Test
+	@DirtiesContext // 컨텍스트의 DI 설정을 변경하는 테스트라는 것을 알려준다.
 	public void upgradeLevels() throws Exception{
 		dao.deleteAll();
 		for(User user : users){
 			dao.add(user);
 		}
+		
+		MockMailSender mockMailSender = new MockMailSender();
+		userServiceImpl.setMailSender(mockMailSender);
 		
 		userService.upgradeLevels();
 		
@@ -214,6 +247,11 @@ public class UserDaoTest {
 		checkLevelUpgraded(users.get(2), false);
 		checkLevelUpgraded(users.get(3), true);
 		checkLevelUpgraded(users.get(4), false);
+		
+		List<String> request = mockMailSender.getRequests();
+		assertThat(request.size(), is(2));
+		assertThat(request.get(0), is(users.get(1).getEmail()));
+		assertThat(request.get(1), is(users.get(3).getEmail()));
 	}
 	
 	
@@ -233,32 +271,17 @@ public class UserDaoTest {
 			assertThat(userUpdate.getLevel(), is(user.getLevel()));
 		}
 	}
-	
-	@Test
-	public void add(){
-		dao.deleteAll();
-		
-		User userWithLevel = users.get(4);
-		User userWithoutLevel = users.get(0);
-		userWithoutLevel.setLevel(null);
-		
-		userService.add(userWithLevel);
-		userService.add(userWithoutLevel);
-		
-		User userWithLevelRead = dao.get(userWithLevel.getId());
-		User userWithoutLevelRead = dao.get(userWithoutLevel.getId());
-		
-		assertThat(userWithLevelRead.getLevel(), is(userWithLevel.getLevel()));
-		assertThat(userWithoutLevelRead.getLevel(), is(Level.BASIC));
-	}
 
 	@Test
 	public void upgradeAllOrNothing() throws Exception{
 		
-		UserService testUserService = new TestUserService(users.get(3).getId());
+		TestUserService testUserService = new TestUserService(users.get(3).getId());
 		testUserService.setUserDao(this.dao);
-		//testUserService.setDataSource(dataSource);
-		testUserService.setTransactionManager(transactionManager);
+		testUserService.setMailSender(mailSender);
+		
+		UserServiceTx txUserService = new UserServiceTx();	
+		txUserService.setTransactionManager(transactionManager);
+		txUserService.setUserService(testUserService);
 		
 		dao.deleteAll();
 		for(User user : users){
@@ -266,7 +289,7 @@ public class UserDaoTest {
 		}
 		
 		try{
-			testUserService.upgradeLevels();
+			txUserService.upgradeLevels();
 			fail("TestUserServiceException expected");
 		}
 		catch(TestUserServiceException e){
