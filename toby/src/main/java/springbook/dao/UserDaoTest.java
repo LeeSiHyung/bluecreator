@@ -227,10 +227,7 @@ public class UserDaoTest {
 	@Test
 	//@DirtiesContext // 컨텍스트의 DI 설정을 변경하는 테스트라는 것을 알려준다.
 	public void upgradeLevels() throws Exception{
-		// dao.deleteAll();
-		// for(User user : users){
-		// 	dao.add(user);
-		// }
+		
 		UserServiceImpl userServiceImpl = new UserServiceImpl();
 		MockUserDao mockUserDao = new MockUserDao(this.users);
 		userServiceImpl.setUserDao(mockUserDao);
@@ -239,13 +236,6 @@ public class UserDaoTest {
 		userServiceImpl.setMailSender(mockMailSender);
 		
 		userServiceImpl.upgradeLevels();
-		
-		
-		// checkLevelUpgraded(users.get(0), false);
-		// checkLevelUpgraded(users.get(1), true);
-		// checkLevelUpgraded(users.get(2), false);
-		// checkLevelUpgraded(users.get(3), true);
-		// checkLevelUpgraded(users.get(4), false);
 		
 		List<User> updated = mockUserDao.getUpdated();
  		assertThat(updated.size(), is(2));
@@ -320,7 +310,7 @@ public class UserDaoTest {
 		}
 
 		public List<User> getUpdated() {
-			return updated;
+			return this.updated;
 		}
 		
 		@Override
