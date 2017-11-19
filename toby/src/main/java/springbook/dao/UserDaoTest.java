@@ -35,16 +35,17 @@ import org.springframework.transaction.PlatformTransactionManager;
 import springbook.domain.Level;
 import springbook.domain.User;
 import springbook.service.MockMailSender;
+import springbook.service.TxProxyFactoryBean;
 import springbook.service.UserService;
 import springbook.service.UserServiceImpl;
 import springbook.service.UserServiceImpl.TestUserService;
 import springbook.service.UserServiceImpl.TestUserServiceException;
-import springbook.service.UserServiceTx;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="/test-applicationContext.xml")
 @DirtiesContext
 public class UserDaoTest {
+	
 	@Autowired
 	ApplicationContext context;
 	
@@ -280,15 +281,32 @@ public class UserDaoTest {
 	}
 
 	@Test
+	@DirtiesContext // 컨텍스트 무효화 애노테이션
 	public void upgradeAllOrNothing() throws Exception{
 		
 		TestUserService testUserService = new TestUserService(users.get(3).getId());
 		testUserService.setUserDao(this.dao);
 		testUserService.setMailSender(mailSender);
 		
-		UserServiceTx txUserService = new UserServiceTx();	
-		txUserService.setTransactionManager(transactionManager);
-		txUserService.setUserService(testUserService);
+		// UserServiceTx txUserService = new UserServiceTx();	
+		// txUserService.setTransactionManager(transactionManager);
+		// txUserService.setUserService(testUserService);
+		
+		// TransactionHandler txHandler = new TransactionHandler();
+		// txHandler.setTarget(testUserService);
+		// txHandler.setTransactionManager(transactionManager);
+		// txHandler.setPattern("upgradeLevels");
+		// 
+		// UserService txUserService = (UserService)Proxy.newProxyInstance(
+		// 		getClass().getClassLoader(), 
+		// 		new Class[]{UserService.class}, 
+		// 		txHandler
+		// 		);
+		
+		// 텍스트용 타깃 주입
+		TxProxyFactoryBean txProxyFactoryBean = context.getBean("&userService", TxProxyFactoryBean.class);
+		txProxyFactoryBean.setTarget(testUserService);
+		UserService txUserService = (UserService) txProxyFactoryBean.getObject();
 		
 		dao.deleteAll();
 		for(User user : users){
