@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DuplicateKeyException;
@@ -35,7 +36,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import springbook.domain.Level;
 import springbook.domain.User;
 import springbook.service.MockMailSender;
-import springbook.service.TxProxyFactoryBean;
 import springbook.service.UserService;
 import springbook.service.UserServiceImpl;
 import springbook.service.UserServiceImpl.TestUserService;
@@ -304,7 +304,9 @@ public class UserDaoTest {
 		// 		);
 		
 		// 텍스트용 타깃 주입
-		TxProxyFactoryBean txProxyFactoryBean = context.getBean("&userService", TxProxyFactoryBean.class);
+		//TxProxyFactoryBean txProxyFactoryBean = context.getBean("&userService", TxProxyFactoryBean.class);
+		
+		ProxyFactoryBean txProxyFactoryBean = context.getBean("&userService", ProxyFactoryBean.class);
 		txProxyFactoryBean.setTarget(testUserService);
 		UserService txUserService = (UserService) txProxyFactoryBean.getObject();
 		

@@ -123,7 +123,7 @@ public class ReflectionTest {
 		
 		assertThat(proxiedHello.sayHello("Toby"), is("HELLO TOBY"));
 		assertThat(proxiedHello.sayHi("Toby"), is("HI TOBY"));
-		assertThat(proxiedHello.sayThankYou("Toby"), is("Thank You Toby"));
+		assertThat(proxiedHello.sayThankYou("Toby"), is("Thank You Toby")); // sayH* 의 비교조건을 설정했기 때문에 해당 부분은 부가기능이 추가되지 않음.
 		
 	}
 	
