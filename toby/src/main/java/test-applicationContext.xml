@@ -11,7 +11,33 @@
 		<property name="password" value="123qwe!@" />
 	</bean>
 	
-<!-- Proxy를 이용하기전에 사용하던 Bean 설정 	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<bean id="userDao" class="springbook.dao.UserDaoJdbc">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="mailSender" class="springbook.service.DummyMailSender"/>
+	
+	<!-- 어드바이스 등록 -->
+	<bean id="transactionAdvice" class="springbook.service.TransactionAdvice">
+		<property name="transactionManager" ref="transactionManager" />
+	</bean>
+	
+	<!-- 포인트 컷 등록 -->
+	<bean id="transactionPointcut" class="org.springframework.aop.support.NameMatchMethodPointcut">
+		<property name="mappedName" value ="upgrade*"/>
+	</bean>
+	
+	<!-- 어드바이저 등록 -->
+	<bean id="transactionAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="advice" ref="transactionAdvice" />
+		<property name="pointcut" ref="transactionPointcut" />
+	</bean>
+	
+	<!-- Proxy를 이용하기전에 사용하던 Bean 설정 	
 	<bean id="userService" class="springbook.service.UserServiceTx">
 		<property name="transactionManager"  ref="transactionManager"/>
 		<property name="userService" ref="userServiceImpl" />
@@ -39,30 +65,5 @@
 		<property name="mailSender" ref="mailSender" />
 	</bean>
 	
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"/>
-	</bean>
-	
-	<bean id="userDao" class="springbook.dao.UserDaoJdbc">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-	
-	<bean id="mailSender" class="springbook.service.DummyMailSender"/>
-	
-	<!-- 어드바이스 등록 -->
-	<bean id="transactionAdvice" class="springbook.service.TransactionAdvice">
-		<property name="transactionManager" ref="transactionManager" />
-	</bean>
-	
-	<!-- 포인트 컷 등록 -->
-	<bean id="transactionPointcut" class="org.springframework.aop.support.NameMatchMethodPointcut">
-		<property name="mappedName" value ="upgrade*"/>
-	</bean>
-	
-	<!-- 어드바이저 등록 -->
-	<bean id="transactionAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
-		<property name="advice" ref="transactionAdvice" />
-		<property name="pointcut" ref="transactionPointcut" />
-	</bean>
 	
 </beans>

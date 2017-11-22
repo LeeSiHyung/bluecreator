@@ -20,6 +20,8 @@ public class TxProxyFactoryBean implements FactoryBean<Object>{
 		txHandler.setTarget(target);
 		txHandler.setTransactionManager(transactionManager);
 		txHandler.setPattern(pattern);
+		
+		// 객체를 생성할 수 없는 프록시를 빈으로 설정하기 위해서 FactoryBean를 구현해서 getObject를 통해 Bean을 등록한다.
 		return Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
 				new Class[]{serviceInterface}, 
