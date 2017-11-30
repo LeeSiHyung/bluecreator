@@ -21,7 +21,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DuplicateKeyException;
@@ -38,7 +37,6 @@ import springbook.domain.User;
 import springbook.service.MockMailSender;
 import springbook.service.UserService;
 import springbook.service.UserServiceImpl;
-import springbook.service.UserServiceImpl.TestUserService;
 import springbook.service.UserServiceImpl.TestUserServiceException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -69,7 +67,10 @@ public class UserDaoTest {
 	UserService userService;
 	
 	@Autowired
-	UserServiceImpl userServiceImpl;
+	UserService testUserService;
+	
+	//@Autowired
+	//UserServiceImpl userServiceImpl;
 	
 	@Before
 	public void setUp() {
@@ -281,12 +282,12 @@ public class UserDaoTest {
 	}
 
 	@Test
-	@DirtiesContext // 컨텍스트 무효화 애노테이션
+	//@DirtiesContext // 컨텍스트 무효화 애노테이션
 	public void upgradeAllOrNothing() throws Exception{
 		
-		TestUserService testUserService = new TestUserService(users.get(3).getId());
-		testUserService.setUserDao(this.dao);
-		testUserService.setMailSender(mailSender);
+		//TestUserService testUserService = new TestUserService(users.get(3).getId());
+		//testUserService.setUserDao(this.dao);
+		//testUserService.setMailSender(mailSender);
 		
 		// UserServiceTx txUserService = new UserServiceTx();	
 		// txUserService.setTransactionManager(transactionManager);
@@ -306,9 +307,9 @@ public class UserDaoTest {
 		// 텍스트용 타깃 주입
 		//TxProxyFactoryBean txProxyFactoryBean = context.getBean("&userService", TxProxyFactoryBean.class);
 		
-		ProxyFactoryBean txProxyFactoryBean = context.getBean("&userService", ProxyFactoryBean.class);
-		txProxyFactoryBean.setTarget(testUserService);
-		UserService txUserService = (UserService) txProxyFactoryBean.getObject();
+		// ProxyFactoryBean txProxyFactoryBean = context.getBean("&userService", ProxyFactoryBean.class);
+		// txProxyFactoryBean.setTarget(testUserService);
+		// UserService txUserService = (UserService) txProxyFactoryBean.getObject();
 		
 		dao.deleteAll();
 		for(User user : users){
@@ -316,7 +317,7 @@ public class UserDaoTest {
 		}
 		
 		try{
-			txUserService.upgradeLevels();
+			this.testUserService.upgradeLevels();
 			fail("TestUserServiceException expected");
 		}
 		catch(TestUserServiceException e){
@@ -356,6 +357,11 @@ public class UserDaoTest {
 		assertThat(mailMessages.get(0).getTo()[0], is(users.get(1).getEmail()));
 		assertThat(mailMessages.get(1).getTo()[0], is(users.get(3).getEmail()));
 		
+	}
+	
+	@Test
+	public void advisorAutoProxyCreator(){
+		assertThat(testUserService, is(java.lang.reflect.Proxy.class));
 	}
 	
 	

@@ -70,13 +70,10 @@ public class UserServiceImpl implements UserService{
 		userDao.add(user);
 	}
 	
-	public static class TestUserService extends UserServiceImpl{
+	public static class TestUserServiceImpl extends UserServiceImpl{
 		// TestUserServiceException 발생 시킬 ID
-		private String id;
+		private String id = "madnite1"; // 테스트 픽스처의 users(3)의 ud 값을 고정시킨다.
 
-		public TestUserService(String id) {
-			this.id = id;
-		}
 		
 		@Override
 		protected void upgradeLevel(User user) {
