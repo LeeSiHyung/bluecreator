@@ -364,6 +364,10 @@ public class UserDaoTest {
 		assertThat(testUserService, is(java.lang.reflect.Proxy.class));
 	}
 	
+	@Test
+	public void readOnlyTransactionAttribute(){
+		testUserService.getAll();
+	}
 	
 	static class MockUserDao implements UserDao{
 		

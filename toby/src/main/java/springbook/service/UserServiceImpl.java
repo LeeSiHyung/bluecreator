@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService{
 		userDao.add(user);
 	}
 	
-	public static class TestUserServiceImpl extends UserServiceImpl{
+	public static class TestUserService extends UserServiceImpl{
 		// TestUserServiceException 발생 시킬 ID
 		private String id = "madnite1"; // 테스트 픽스처의 users(3)의 ud 값을 고정시킨다.
 
@@ -81,6 +81,16 @@ public class UserServiceImpl implements UserService{
 				throw new TestUserServiceException();
 			}
 			super.upgradeLevel(user);
+		}
+		
+		@Override
+		public List<User> getAll() {
+			// 강제로 쓰기 시도를 한다. 여기서 읽기전용 속성으로 인한 예외가 발생해야 한다.
+			for(User user : super.getAll()){
+				super.update(user);
+			}
+			// 메소드가 끝나기 전에 예외가 발생해야 하니 리턴 값은 별 의미가 없다.
+			return null; 
 		}
 	}
 	
