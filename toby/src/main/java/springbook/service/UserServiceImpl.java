@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.transaction.annotation.Transactional;
 
 import springbook.dao.UserDao;
 import springbook.domain.Level;
 import springbook.domain.User;
 
+//@Transactional
 public class UserServiceImpl implements UserService{
 	
 	public static final int MIN_LOGOUT_FOR_SILVER = 50;
