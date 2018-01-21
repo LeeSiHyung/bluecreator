@@ -24,11 +24,11 @@ public class UserDaoJdbc implements UserDao{
 		@Override
 		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 			User user = new User();
-			user.setId(rs.getString("id"));
-			user.setName(rs.getString("name"));
-			user.setPassword(rs.getString("password"));
-			user.setEmail(rs.getString("email"));
-			user.setLevel(Level.valueOf(rs.getInt("level")));
+			user.setId(rs.getString("user_id"));
+			user.setName(rs.getString("user_name"));
+			user.setPassword(rs.getString("user_password"));
+			user.setEmail(rs.getString("user_email"));
+			user.setLevel(Level.valueOf(rs.getInt("user_level")));
 			user.setLogin(rs.getInt("login"));
 			user.setRecommend(rs.getInt("recommend"));
 			return user;
@@ -40,12 +40,12 @@ public class UserDaoJdbc implements UserDao{
 	}
 
 	public void add(final User user){
-		this.jdbcTemplate.update("insert into users(id, name, password, email, level, login, recommend) values(?,?,?,?,?,?,?)"
+		this.jdbcTemplate.update("insert into users(user_id, user_name, user_password, user_email, user_level, login, recommend) values(?,?,?,?,?,?,?)"
 				, user.getId(), user.getName(), user.getPassword(), user.getEmail(), user.getLevel().intValue(), user.getLogin(), user.getRecommend());
 	}
 
 	public User get(String id){
-		return this.jdbcTemplate.queryForObject("select * from users where id = ?", 
+		return this.jdbcTemplate.queryForObject("select * from users where user_id = ?", 
 				new Object[]{id}, this.userMapper);
 		
 	}
@@ -55,12 +55,12 @@ public class UserDaoJdbc implements UserDao{
 	}
 	
 	public List<User> getAll(){
-		return this.jdbcTemplate.query("select * from users order by id", 
+		return this.jdbcTemplate.query("select * from users order by user_id", 
 				this.userMapper);
 	}
 
 	public void update(User user) {
-		this.jdbcTemplate.update("update users set name = ?, password = ?, email = ?, level = ?, login = ?, recommend = ? where id = ?", user.getName(), user.getPassword(), user.getEmail(), user.getLevel().intValue(), user.getLogin(), user.getRecommend(), user.getId());
+		this.jdbcTemplate.update("update users set user_name = ?, user_password = ?, user_email = ?, user_level = ?, login = ?, recommend = ? where user_id = ?", user.getName(), user.getPassword(), user.getEmail(), user.getLevel().intValue(), user.getLogin(), user.getRecommend(), user.getId());
 	}
 
 	
