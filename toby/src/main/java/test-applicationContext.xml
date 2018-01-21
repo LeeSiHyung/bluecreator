@@ -16,8 +16,7 @@
 	</bean>
 
 	<!-- 오라클DB 설정 -->	
-	<!-- <bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
 		<property name="url" value="jdbc:oracle:thin:@211.237.24.135:1521:OTTR" />
 		<property name="username" value="toby" />
