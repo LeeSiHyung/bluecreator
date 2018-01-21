@@ -395,7 +395,6 @@ public class UserDaoTest {
 		/** -------------------트랜잭션 경계설정--------------------- **/
 	}
 	
-	
 	static class MockUserDao implements UserDao{
 		
 		private List<User> users; // 레벨 업그레이드 후보 User 오브젝트 목록
