@@ -374,7 +374,7 @@ public class UserDaoTest {
 	}
 	
 	
-	/** 트랜잭션 전파 속성 Required 테스트 **/
+	/** 트랜잭션 전파 속성 Required 테스트1 **/
 	@Test
 	public void transactionSync(){
 		
@@ -393,6 +393,31 @@ public class UserDaoTest {
 		/** -------------------트랜잭션 경계설정--------------------- **/
 		transactionManager.commit(txStatus);
 		/** -------------------트랜잭션 경계설정--------------------- **/
+	}
+	
+	
+	/** 트랜잭션 전파 속성 Required 테스트2 **/
+	@Test
+	public void transactionSync2(){
+		
+		dao.deleteAll();
+		assertThat(dao.getCount(), is(0));
+		
+		DefaultTransactionDefinition txDefinition = new DefaultTransactionDefinition();
+		TransactionStatus txStatus = transactionManager.getTransaction(txDefinition);
+		
+		userService.add(users.get(0));
+		userService.add(users.get(1));
+		
+		// dao의 getCount() 메소드도 같은 트랜잭션에서 동작한다. add()에 의해 두 개가 등록됐는지 확인해둔다.
+		assertThat(dao.getCount(), is(2));
+		
+		// 강제로 롤백한다. 트랜잭션 시작 전 상태로 돌아가야 한다.
+		transactionManager.rollback(txStatus);
+		
+		// add()의 작업이 취소되고 트랜잭션 시작 이전의 상태임을 확인 할 수 있다.
+		assertThat(dao.getCount(), is(0));
+		
 	}
 	
 	static class MockUserDao implements UserDao{
