@@ -27,11 +27,12 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import springbook.domain.Level;
@@ -43,7 +44,9 @@ import springbook.service.UserServiceImpl.TestUserServiceException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="/test-applicationContext.xml")
-@DirtiesContext
+//@DirtiesContext
+//@Transactional
+//@TransactionConfiguration(defaultRollback=false)
 public class UserDaoTest {
 	
 	@Autowired
@@ -435,6 +438,22 @@ public class UserDaoTest {
 			transactionManager.rollback(txStatus);
 		}
 		
+	}
+	
+	@Test
+	@Transactional
+	//@Rollback(false) // 테스트 트랜잭션을 커밋시키도록 설정한 테스트
+	public void transactionSync4(){
+		userService.deleteAll();
+		userService.add(users.get(0));
+		userService.add(users.get(1));
+	}
+	
+	@Test
+	/** 에러가 발생해야 되지만 정상 처리됨 이 건은 나중에 확인 필요.예상은 MariaDB에서는 OK로 예상됨**/
+	@Transactional(readOnly=true)
+	public void transactionSync5(){
+		userService.deleteAll();
 	}
 	
 	static class MockUserDao implements UserDao{
