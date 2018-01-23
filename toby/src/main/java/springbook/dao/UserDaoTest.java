@@ -420,6 +420,23 @@ public class UserDaoTest {
 		
 	}
 	
+	@Test
+	public void transactionSync3(){
+		
+		DefaultTransactionDefinition txDefinition = new DefaultTransactionDefinition();
+		TransactionStatus txStatus = transactionManager.getTransaction(txDefinition);
+		
+		try{
+			userService.deleteAll();
+			userService.add(users.get(0));
+			userService.add(users.get(1));
+		}
+		finally{
+			transactionManager.rollback(txStatus);
+		}
+		
+	}
+	
 	static class MockUserDao implements UserDao{
 		
 		private List<User> users; // 레벨 업그레이드 후보 User 오브젝트 목록
