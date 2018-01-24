@@ -458,7 +458,8 @@ public class UserDaoTest {
 	}
 	
 	@Test
-	@Transactional(propagation=Propagation.NEVER)
+	/** 트랜잭션 **/
+	@Transactional(propagation=Propagation.NEVER) 
 	public void notTransactionSync(){
 		userService.deleteAll();
 		userService.add(users.get(0));
