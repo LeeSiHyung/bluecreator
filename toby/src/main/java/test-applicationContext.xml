@@ -31,14 +31,18 @@
 	<bean id="userDao" class="springbook.dao.UserDaoJdbc">
 		<property name="dataSource" ref="dataSource" />
 		<!-- <property name="sqlAdd" value="insert into users(user_id, user_name, user_password, user_email, user_level, login, recommend) values(?,?,?,?,?,?,?)"></property> -->
+		<property name="sqlService" ref="sqlService" />
+	</bean>
+	
+	<bean id="sqlService" class="springbook.service.SimpleSqlService">
 		<property name="sqlMap">
 			<map>
-				<entry key="delete" value="delete from users"/>
-				<entry key="add" value="insert into users(user_id, user_name, user_password, user_email, user_level, login, recommend) values(?,?,?,?,?,?,?)"/>
-				<entry key="get" value="select * from users where user_id = ?"/>
-				<entry key="getCount" value="select count(*) from users"/>
-				<entry key="getAll" value="select * from users order by user_id"/>
-				<entry key="update" value="update users set user_name = ?, user_password = ?, user_email = ?, user_level = ?, login = ?, recommend = ? where user_id = ?"/>
+				<entry key="userDeleteAll" value="delete from users"/>
+				<entry key="userAdd" value="insert into users(user_id, user_name, user_password, user_email, user_level, login, recommend) values(?,?,?,?,?,?,?)"/>
+				<entry key="userGet" value="select * from users where user_id = ?"/>
+				<entry key="usetGetCount" value="select count(*) from users"/>
+				<entry key="userGetAll" value="select * from users order by user_id"/>
+				<entry key="userUpdate" value="update users set user_name = ?, user_password = ?, user_email = ?, user_level = ?, login = ?, recommend = ? where user_id = ?"/>
 			</map>
 		</property>
 	</bean>
