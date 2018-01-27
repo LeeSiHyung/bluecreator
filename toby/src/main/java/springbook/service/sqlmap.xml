@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Liquid Technologies Online Tools 1.0 (https://www.liquid-technologies.com) -->
+<sqlmap xmlns="http://www.example.org/sqlmap" xsi:schemaLocation="http://www.example.org/sqlmap schema.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<sql key="userDeleteAll">delete from users</sql>
+	<sql key="userAdd">insert into users(user_id, user_name, user_password, user_email, user_level, login, recommend) values(?,?,?,?,?,?,?)</sql>
+	<sql key="userGet">select * from users where user_id = ?</sql>
+	<sql key="usetGetCount">select count(*) from users</sql>
+	<sql key="userGetAll">select * from users order by user_id</sql>
+	<sql key="userUpdate">update users set user_name = ?, user_password = ?, user_email = ?, user_level = ?, login = ?, recommend = ? where user_id = ?</sql>
+
+</sqlmap>

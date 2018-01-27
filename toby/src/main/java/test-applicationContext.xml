@@ -34,7 +34,7 @@
 		<property name="sqlService" ref="sqlService" />
 	</bean>
 	
-	<bean id="sqlService" class="springbook.service.SimpleSqlService">
+	<!-- <bean id="sqlService" class="springbook.service.SimpleSqlService">
 		<property name="sqlMap">
 			<map>
 				<entry key="userDeleteAll" value="delete from users"/>
@@ -45,6 +45,9 @@
 				<entry key="userUpdate" value="update users set user_name = ?, user_password = ?, user_email = ?, user_level = ?, login = ?, recommend = ? where user_id = ?"/>
 			</map>
 		</property>
+	</bean> -->
+	
+	<bean id="sqlService" class="springbook.service.XmlSqlService">
 	</bean>
 	
 	<bean id="mailSender" class="springbook.service.DummyMailSender"/>
