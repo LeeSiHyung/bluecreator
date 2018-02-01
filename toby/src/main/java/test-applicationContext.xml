@@ -50,6 +50,9 @@
 	</bean> -->
 	
 	<bean id="sqlService" class="springbook.service.XmlSqlService">
+		<property name="sqlReader" ref="sqlService"/>
+		<property name="sqlRegistry" ref="sqlService"/>
+	
 		<!-- XmlSqlService.class.getResourceAsStream을 기준으로 파일을 찾음 -->
 		<property name="sqlmapFile" value="sqlmap.xml"/>
 	</bean>
