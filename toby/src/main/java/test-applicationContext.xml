@@ -49,12 +49,24 @@
 		</property>
 	</bean> -->
 	
-	<bean id="sqlService" class="springbook.service.XmlSqlService">
+	<!-- <bean id="sqlService" class="springbook.service.sql.XmlSqlService">
 		<property name="sqlReader" ref="sqlService"/>
 		<property name="sqlRegistry" ref="sqlService"/>
 	
-		<!-- XmlSqlService.class.getResourceAsStream을 기준으로 파일을 찾음 -->
+		XmlSqlService.class.getResourceAsStream을 기준으로 파일을 찾음
 		<property name="sqlmapFile" value="sqlmap.xml"/>
+	</bean> -->
+	
+	<bean id="sqlService" class="springbook.service.sql.BaseSqlService">
+		<property name="sqlReader" ref="sqlReader"/>
+		<property name="sqlRegistry" ref="sqlRegistry"/>
+	</bean>
+	
+	<bean id="sqlReader" class="springbook.service.sql.JaxbXmlSqlReader">
+		<property name="sqlmapFile" value="sqlmap.xml" />
+	</bean>
+	
+	<bean id="sqlRegistry" class="springbook.service.sql.HashMapSqlRegitry">
 	</bean>
 	
 	<bean id="mailSender" class="springbook.service.DummyMailSender"/>
