@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import springbook.domain.Level;
 import springbook.domain.User;
-import springbook.service.SqlService;
+import springbook.service.sql.SqlService;
 
 public class UserDaoJdbc implements UserDao{
 	
