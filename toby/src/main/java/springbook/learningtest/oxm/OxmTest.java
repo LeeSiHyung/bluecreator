@@ -1,5 +1,8 @@
 package springbook.learningtest.oxm;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -14,12 +17,8 @@ import org.springframework.oxm.XmlMappingException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import oracle.net.aso.l;
 import springbook.jaxb.SqlType;
 import springbook.jaxb.Sqlmap;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 // 클래스 이름 + "-context.xml" 파일을 사용하는 애플리케이션 컨텍스트로 만들어서 테스트 할 수 있게 해준다. (Path 지정이 안되었으면 자동으로 같은 클래스의 클래스 이름과 똑같은 Context를 맵핑)

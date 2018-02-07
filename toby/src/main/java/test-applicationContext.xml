@@ -63,15 +63,23 @@
 	</bean>
 	 -->
 	 
-	<bean id="sqlService" class="springbook.service.sql.DefaultSqlService">
+	<!-- <bean id="sqlService" class="springbook.service.sql.DefaultSqlService">
+	</bean> -->
+	
+	<bean id="sqlService" class="springbook.service.sql.OxmSqlService">
+		<property name="unmarshaller" ref="unmarshaller"/>
 	</bean>
 	
-	<bean id="sqlReader" class="springbook.service.sql.JaxbXmlSqlReader">
+	<bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="contextPath" value="springbook.jaxb"/>
+	</bean>
+	
+	<!-- <bean id="sqlReader" class="springbook.service.sql.JaxbXmlSqlReader">
 		<property name="sqlmapFile" value="sqlmap.xml" />
 	</bean>
 	
 	<bean id="sqlRegistry" class="springbook.service.sql.HashMapSqlRegitry">
-	</bean>
+	</bean> -->
 	
 	<bean id="mailSender" class="springbook.service.DummyMailSender"/>
 	
