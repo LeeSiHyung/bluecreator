@@ -68,6 +68,8 @@
 	
 	<bean id="sqlService" class="springbook.service.sql.OxmSqlService">
 		<property name="unmarshaller" ref="unmarshaller"/>
+		<!-- <property name="sqlmap" value="classpath:springbook/service/sql/sqlmap.xml"/> -->
+		<property name="sqlmap" value="file:/C:/Users/master/git/bluecreator/toby/src/main/java/springbook/service/sql/sqlmap.xml"/>
 	</bean>
 	
 	<bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
