@@ -71,7 +71,12 @@
 	<bean id="sqlService" class="springbook.service.sql.OxmSqlService">
 		<property name="unmarshaller" ref="unmarshaller"/>
 		<!-- <property name="sqlmap" value="classpath:springbook/service/sql/sqlmap.xml"/> -->
-		<property name="sqlmap" value="file:/C:/Users/master/git/bluecreator/toby/src/main/java/springbook/service/sql/sqlmap.xml"/>
+		<!-- <property name="sqlmap" value="file:/C:/Users/master/git/bluecreator/toby/src/main/java/springbook/service/sql/sqlmap.xml"/> -->
+		<property name="sqlRegistry" ref="sqlRegistry"/>
+	</bean>
+	
+	<bean id="sqlRegistry" class="springbook.service.sql.EmbeddedDbSqlRegistry">
+		<property name="dataSource" ref="embeddedDatabase"/>
 	</bean>
 	
 	<bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
@@ -220,8 +225,9 @@
 	<!-- 코드의 애노테이션을 이용해서 부가적인 빈 설정 또는 초기화 작업을 해주는 후처리기를 등록 -->
 	<context:annotation-config/>
 	
+	<!-- 내장형 DB 등록 -->
 	<jdbc:embedded-database id="embeddedDatabase" type="HSQL">
-		<jdbc:script location="classpath:/springbook/service/sql/schema.sql"/>
+		<jdbc:script location="classpath:springbook/service/sql/schema.sql"/>
 	</jdbc:embedded-database>
 	
 </beans>
