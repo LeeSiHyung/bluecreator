@@ -20,13 +20,13 @@ public class EmbeddedDbSqlRegistry implements UpdatableSqlRegistry{
 	
 	@Override
 	public void registerSql(String key, String sql) {
-		jdbc.update("insert into sqlmap(key_, sql_) values (?,?)", key, sql);
+		jdbc.update("INSERT INTO SQLMAP(KEY_, SQL_) VALUES (?,?)", key, sql);
 	}
 
 	@Override
 	public String findSql(String key) throws SqlNotFoundException {
 		try{
-			return jdbc.queryForObject("select sql_ from sqlmap where key_ = ?", String.class, key);
+			return jdbc.queryForObject("SELECT SQL_ from SQLMAP WHERE KEY_ = ?", String.class, key);
 		}catch(EmptyResultDataAccessException e){
 			throw new SqlNotFoundException(key + "에 해당하는 SQL을 찾을 수 없습니다.", e);
 		}
@@ -36,7 +36,7 @@ public class EmbeddedDbSqlRegistry implements UpdatableSqlRegistry{
 	public void updateSql(String key, String sql)
 			throws SqlUpdateFailureException {
 		
-		int affected = jdbc.update("update sqlmap set sql_ = ? where key_ = ? ", sql, key);
+		int affected = jdbc.update("UPDATE SQLMAP SET SQL_ = ? WHERE KEY_ = ? ", sql, key);
 		
 		if(affected == 0){
 			throw new SqlUpdateFailureException(key + "에 해당하는 SQL을 찾을 수 없습니다.");
