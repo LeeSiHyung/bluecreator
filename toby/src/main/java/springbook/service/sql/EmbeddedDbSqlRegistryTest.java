@@ -13,7 +13,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import springbook.exception.SqlUpdateFailureException;
 
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class EmbeddedDbSqlRegistryTest extends AbstractUpdatableSqlRegistryTest{
 	
@@ -46,10 +46,10 @@ public class EmbeddedDbSqlRegistryTest extends AbstractUpdatableSqlRegistryTest{
 		
 		try{
 			sqlRegistry.updateSql(sqlmap);
-			fail();
+			//fail();
+			new SqlUpdateFailureException();
 		}
-		catch(SqlUpdateFailureException e){
-		}
+		catch(SqlUpdateFailureException e){}
 		
 		checkFindResult("SQL1", "SQL2", "SQL3");
 	}
