@@ -12,8 +12,8 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import springbook.exception.SqlUpdateFailureException;
 
+import static org.junit.Assert.fail;
 
-import static org.junit.Assert.*;
 
 public class EmbeddedDbSqlRegistryTest extends AbstractUpdatableSqlRegistryTest{
 	
@@ -39,19 +39,22 @@ public class EmbeddedDbSqlRegistryTest extends AbstractUpdatableSqlRegistryTest{
 	
 	@Test
 	public void transactionalUpdate(){
-		checkFindResult("SQL1", "SQL2", "SQL3");
+		checkFind("SQL1", "SQL2", "SQL3");
 		
 		Map<String, String> sqlmap = new HashMap<String, String>();
 		sqlmap.put("KEY1", "Modified1");
+		sqlmap.put("KEY9999!@#$", "Modified9999"); // 이 부분이 실패
 		
 		try{
 			sqlRegistry.updateSql(sqlmap);
-			//fail();
-			new SqlUpdateFailureException();
+			
+			// 예외가 발생해서 catch 블록으로 넘어가지 않으면 뭔가 잘못된 것이다. 
+			// 그 때는 테스트를 강제로 실패하게 만들고 기대와 다르게 동작한 원인을 찾도록 해야 한다.
+			fail();
 		}
 		catch(SqlUpdateFailureException e){}
 		
-		checkFindResult("SQL1", "SQL2", "SQL3");
+		checkFind("SQL1", "SQL2", "SQL3");
 	}
 
 }
