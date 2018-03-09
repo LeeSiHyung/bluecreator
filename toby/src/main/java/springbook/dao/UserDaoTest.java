@@ -43,7 +43,8 @@ import springbook.service.UserServiceImpl;
 import springbook.service.UserServiceImpl.TestUserServiceException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="/test-applicationContext.xml")
+//@ContextConfiguration(locations="/test-applicationContext.xml")
+@ContextConfiguration(classes=TestApplicationContext.class)
 //@DirtiesContext
 //@Transactional
 //@TransactionConfiguration(defaultRollback=false)
