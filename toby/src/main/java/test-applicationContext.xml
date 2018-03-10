@@ -19,12 +19,12 @@
 	<tx:annotation-driven/>
 			
 	<!-- MariaDB 설정 -->			
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
 		<property name="driverClass" value="org.mariadb.jdbc.Driver" />
 		<property name="url" value="jdbc:mariadb://ec2-52-78-240-50.ap-northeast-2.compute.amazonaws.com:3306/toby?characterEncoding=UTF-8" />
 		<property name="username" value="toby" />
 		<property name="password" value="123qwe!@" />
-	</bean>
+	</bean> -->
 
 	<!-- 오라클DB 설정 -->	
 	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -35,15 +35,15 @@
 	</bean> -->
 
 	
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>
-	</bean>
+	</bean> -->
 	
-	<bean id="userDao" class="springbook.dao.UserDaoJdbc">
+	<!-- <bean id="userDao" class="springbook.dao.UserDaoJdbc">
 		<property name="dataSource" ref="dataSource" />
-		<!-- <property name="sqlAdd" value="insert into users(user_id, user_name, user_password, user_email, user_level, login, recommend) values(?,?,?,?,?,?,?)"></property> -->
+		<property name="sqlAdd" value="insert into users(user_id, user_name, user_password, user_email, user_level, login, recommend) values(?,?,?,?,?,?,?)"></property>
 		<property name="sqlService" ref="sqlService" />
-	</bean>
+	</bean> -->
 	
 	<!-- <bean id="sqlService" class="springbook.service.SimpleSqlService">
 		<property name="sqlMap">
@@ -75,20 +75,20 @@
 	<!-- <bean id="sqlService" class="springbook.service.sql.DefaultSqlService">
 	</bean> -->
 	
-	<bean id="sqlService" class="springbook.service.sql.OxmSqlService">
+	<!-- <bean id="sqlService" class="springbook.service.sql.OxmSqlService">
 		<property name="unmarshaller" ref="unmarshaller"/>
-		<!-- <property name="sqlmap" value="classpath:springbook/service/sql/sqlmap.xml"/> -->
-		<!-- <property name="sqlmap" value="file:/C:/Users/master/git/bluecreator/toby/src/main/java/springbook/service/sql/sqlmap.xml"/> -->
+		<property name="sqlmap" value="classpath:springbook/service/sql/sqlmap.xml"/>
+		<property name="sqlmap" value="file:/C:/Users/master/git/bluecreator/toby/src/main/java/springbook/service/sql/sqlmap.xml"/>
 		<property name="sqlRegistry" ref="sqlRegistry"/>
-	</bean>
+	</bean> -->
 	
-	<bean id="sqlRegistry" class="springbook.service.sql.EmbeddedDbSqlRegistry">
+	<!-- <bean id="sqlRegistry" class="springbook.service.sql.EmbeddedDbSqlRegistry">
 		<property name="dataSource" ref="embeddedDatabase"/>
-	</bean>
+	</bean> -->
 	
-	<bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+	<!-- <bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
 		<property name="contextPath" value="springbook.jaxb"/>
-	</bean>
+	</bean> -->
 	
 	<!-- <bean id="sqlReader" class="springbook.service.sql.JaxbXmlSqlReader">
 		<property name="sqlmapFile" value="sqlmap.xml" />
@@ -97,7 +97,7 @@
 	<bean id="sqlRegistry" class="springbook.service.sql.HashMapSqlRegitry">
 	</bean> -->
 	
-	<bean id="mailSender" class="springbook.service.DummyMailSender"/>
+	<!-- <bean id="mailSender" class="springbook.service.DummyMailSender"/> -->
 	
 	<!-- 포인트 컷 등록 -->
 	<!-- 	
@@ -213,10 +213,10 @@
 		<property name="mailSender" ref="mailSender" />
 	</bean> -->
 	
-	<bean id="userService" class="springbook.service.UserServiceImpl">
+	<!-- <bean id="userService" class="springbook.service.UserServiceImpl">
 		<property name="userDao" ref="userDao" />
 		<property name="mailSender" ref="mailSender" />
-	</bean>
+	</bean> -->
 	
 	<!-- 빈 후처리기 -->
 	<!-- Advisor 인터페이스를 구현한 빈을 찾고 프록시 선정대상이라면 프록시를 만들어 원래 빈 오브젝트와 바꿔치기함. -->
@@ -224,7 +224,7 @@
 	
 	<!-- parent="userService:프로퍼티의 정의를 포함해서 userService 빈의 설정을 상속받는다." -->
 	<!-- $기호는 스태틱 멤버 클래스를 지정할 때 사용 -->
-	<bean id="testUserService" class="springbook.service.UserServiceImpl$TestUserService" parent="userService"/>
+	<!-- <bean id="testUserService" class="springbook.service.UserServiceImpl$TestUserService" parent="userService"/> -->
 
 
 	<!-- 내장형 DB 등록 -->

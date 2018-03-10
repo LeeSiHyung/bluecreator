@@ -13,6 +13,9 @@ import springbook.exception.SqlNotFoundException;
 import springbook.exception.SqlRetrievalFailureException;
 import springbook.jaxb.SqlType;
 import springbook.jaxb.Sqlmap;
+import springbook.service.sql.SqlReader;
+import springbook.service.sql.SqlRegistry;
+import springbook.service.sql.SqlService;
 
 public class XmlSqlService implements SqlService, SqlRegistry, SqlReader{
 	
