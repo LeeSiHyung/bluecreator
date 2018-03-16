@@ -16,7 +16,7 @@
 	<!-- <context:annotation-config/> -->
 		
 	<!-- 트랜잭션 애노테이션을 사용하기 위한 태그 -->
-	<tx:annotation-driven/>
+	<!-- <tx:annotation-driven/> -->
 			
 	<!-- MariaDB 설정 -->			
 	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
@@ -228,8 +228,8 @@
 
 
 	<!-- 내장형 DB 등록 -->
-	<jdbc:embedded-database id="embeddedDatabase" type="HSQL">
+	<!-- <jdbc:embedded-database id="embeddedDatabase" type="HSQL">
 		<jdbc:script location="classpath:springbook/service/sql/schema.sql"/>
-	</jdbc:embedded-database>
+	</jdbc:embedded-database> -->
 	
 </beans>
