@@ -2,25 +2,29 @@ package springbook.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 
 import springbook.dao.UserDao;
 import springbook.domain.Level;
 import springbook.domain.User;
 
 //@Transactional
+@Component("userService")
 public class UserServiceImpl implements UserService{
 	
 	public static final int MIN_LOGOUT_FOR_SILVER = 50;
 	public static final int MIN_RECOMMEND_FOR_GOLD = 30;
 	
+	@Autowired
 	private UserDao userDao;
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
 	
+	@Autowired
 	private MailSender mailSender;
 	public void setMailSender(MailSender mailSender) {
 		this.mailSender = mailSender;

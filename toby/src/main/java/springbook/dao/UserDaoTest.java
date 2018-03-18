@@ -53,6 +53,7 @@ public class UserDaoTest {
 	@Autowired
 	ApplicationContext context;
 	
+	@Autowired
 	private UserDao dao; 
 	
 	@Autowired
@@ -80,7 +81,7 @@ public class UserDaoTest {
 	
 	@Before
 	public void setUp() {
-		this.dao = this.context.getBean("userDao", UserDaoJdbc.class);
+		//this.dao = this.context.getBean("userDao", UserDaoJdbc.class);
 		
 		this.user1 = new User("gyumee", "이시형", "springno1", "dltlgud1324@oniontech.com", Level.BASIC, 1, 0);
 		this.user2 = new User("leegw700", "류기연", "springno2", "dltlgud1324@oniontech.com",Level.SILVER, 55, 10);

@@ -9,18 +9,22 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import springbook.domain.Level;
 import springbook.domain.User;
 import springbook.service.sql.SqlService;
 
+//@Component
+@Repository
 public class UserDaoJdbc implements UserDao{
 	
+	@Autowired
 	private SqlService sqlService;
 	
-	public void setSqlService(SqlService sqlService) {
-		this.sqlService = sqlService;
-	}
+	//public void setSqlService(SqlService sqlService) {
+	//	this.sqlService = sqlService;
+	//}
 
 	//private Map<String, String> sqlMap;
 	//public void setSqlMap(Map<String, String> sqlMap) {

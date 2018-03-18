@@ -1,5 +1,7 @@
 package springbook.dao;
 
+
+
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 
 import javax.sql.DataSource;
@@ -7,8 +9,8 @@ import javax.sql.DataSource;
 import org.mariadb.jdbc.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -18,6 +20,7 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import springbook.dao.UserDao;
 import springbook.service.DummyMailSender;
 import springbook.service.UserService;
 import springbook.service.UserServiceImpl;
@@ -32,13 +35,17 @@ import springbook.service.sql.SqlService;
 // @ImportResource 애노테이션을 이용하면 DI 설정정보에서 XML의 설정정보를 가져오게 만들 수 있다.
 // @ImportResource("/test-applicationContext.xml")
 @EnableTransactionManagement
+@ComponentScan(basePackages="springbook")
 public class TestApplicationContext {
 	
-	@Autowired
-	SqlService sqlService;
+	//@Autowired
+	//SqlService sqlService;
 	
 	//@Resource
 	//EmbeddedDatabase embeddedDatabase;
+	
+	@Autowired
+	UserDao userDao;
 	
 	@Bean
 	public DataSource dataSource(){
@@ -57,26 +64,29 @@ public class TestApplicationContext {
 		return tm;
 	}
 	
-	@Bean
-	public UserDao userDao(){
-		UserDaoJdbc dao = new UserDaoJdbc();
-		//dao.setDataSource(dataSource());
-		dao.setSqlService(this.sqlService);
-		return dao;
-	}
+	// @Bean
+	// public UserDao userDao(){
+	// 	//UserDaoJdbc dao = new UserDaoJdbc();
+	// 	//dao.setDataSource(dataSource());
+	// 	//dao.setSqlService(this.sqlService);
+	// 	//return dao;
+	// 	return new UserDaoJdbc();
+	// }
 	
-	@Bean
-	public UserService userService(){
-		UserServiceImpl service = new UserServiceImpl();
-		service.setUserDao(userDao());
-		service.setMailSender(mailSender());
-		return service;
-	}
+	// @Bean
+	// public UserService userService(){
+	// 	UserServiceImpl service = new UserServiceImpl();
+	// 	//service.setUserDao(userDao());
+	// 	service.setUserDao(userDao);
+	// 	service.setMailSender(mailSender());
+	// 	return service;
+	// }
 	
 	@Bean
 	public UserService testUserService(){
 		TestUserService testService = new TestUserService();
-		testService.setUserDao(userDao());
+		//testService.setUserDao(userDao());
+		testService.setUserDao(userDao);
 		testService.setMailSender(mailSender());
 		return testService;
 	}
