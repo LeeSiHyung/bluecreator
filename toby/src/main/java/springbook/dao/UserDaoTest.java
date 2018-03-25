@@ -22,11 +22,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -44,10 +46,14 @@ import springbook.service.UserServiceImpl.TestUserServiceException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations="/test-applicationContext.xml")
-@ContextConfiguration(classes={AppContext.class, TestAppContext.class})
+//@ContextConfiguration(classes={AppContext.class, TestAppContext.class})
+@ContextConfiguration(classes={AppContext.class})
 //@DirtiesContext
 //@Transactional
 //@TransactionConfiguration(defaultRollback=false)
+
+//@ActiveProfiles("production")
+@ActiveProfiles("test")
 public class UserDaoTest {
 	
 	@Autowired
@@ -78,6 +84,13 @@ public class UserDaoTest {
 	
 	//@Autowired
 	//UserServiceImpl userServiceImpl;
+	
+	@Autowired
+	// BeanFactory의 구현 클래스
+	// 거의 대부분의 스프링 컨테이너는 이 클래스를 이용해 빈을 등록하고 관리한다.
+	// DefaultListableBeanFactory 에는 getBeanDefinitionNames() 메소드가 있어서 컨테이너에 등록된 모든 빈 이름을 가져올 수 있고, 
+	// 빈 이름을 이용해서 실제 빈과 빈 클래스 정보 등도 조회해볼 수 있다.
+	DefaultListableBeanFactory bf;
 	
 	@Before
 	public void setUp() {
@@ -465,6 +478,16 @@ public class UserDaoTest {
 		userService.deleteAll();
 		userService.add(users.get(0));
 		userService.add(users.get(1));
+	}
+	
+	@Test
+	public void beans(){
+		System.out.println("************************ Bean List ************************");
+		for(String n : bf.getBeanDefinitionNames()){
+			System.out.println(n + " \t" + bf.getBean(n).getClass().getName());
+		}
+		System.out.println("**********************************************************");
+
 	}
 	
 	static class MockUserDao implements UserDao{
