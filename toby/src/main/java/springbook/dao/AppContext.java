@@ -2,17 +2,18 @@ package springbook.dao;
 
 import java.sql.Driver;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
-import oracle.jdbc.driver.OracleDriver;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
@@ -47,36 +48,54 @@ public class AppContext {
 	@Autowired
 	UserDao userDao;
 	
-	@Autowired
-	Environment env;
+	@Resource
+	Environment env; // @Autowired가 안되는 현상은 확인 필요.
+	
+	@Value("${db.driverClass]")
+	Class<? extends Driver> driverClass;
+	
+	@Value("${db.url}")
+	String url;
+	
+	@Value("${db.username}")
+	String username;
+	
+	@Value("${db.password}")
+	String password;
 
+	@Bean
+	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer(){
+		return new PropertySourcesPlaceholderConfigurer();
+	}
+	
 	@Bean
 	public DataSource dataSource() {
 		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 		// dataSource.setDriverClass(Driver.class);
 		// dataSource.setUrl("jdbc:mariadb://ec2-52-78-240-50.ap-northeast-2.compute.amazonaws.com:3306/toby?characterEncoding=UTF-8");
-		dataSource.setDriverClass(OracleDriver.class);
-		dataSource.setUrl("jdbc:oracle:thin:@211.237.24.135:1521:OTTR");
-		dataSource.setUsername("toby");
-		dataSource.setPassword("123qwe!@");
+		// dataSource.setDriverClass(OracleDriver.class);
+		// dataSource.setUrl("jdbc:oracle:thin:@211.237.24.135:1521:OTTR");
 		
-		// try{
-		// 	
-		// 	System.out.println("test properties : " + env.getProperty("db.url"));
-		// }catch(Exception e){
-		// 	e.printStackTrace();s
-		// }
+		// dataSource.setUsername("toby");
+		// dataSource.setPassword("123qwe!@");
 		
-		//try {
-		//	dataSource.setDriverClass((Class<? extends Driver>) Class.forName(env.getProperty("db.driverClass")));
-		//} catch (ClassNotFoundException e) {
-		//	e.printStackTrace();
-		//	throw new RuntimeException(e);
-		//}
-		//
-		//dataSource.setUrl(env.getProperty("db.url"));
-		//dataSource.setUsername(env.getProperty("db.username"));
-		//dataSource.setPassword(env.getProperty("db.password"));
+		
+		try {
+			dataSource.setDriverClass((Class<? extends java.sql.Driver>) Class.forName(env.getProperty("db.driverClass")));
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		
+		dataSource.setUrl(env.getProperty("db.url"));
+		dataSource.setUsername(env.getProperty("db.username"));
+		dataSource.setPassword(env.getProperty("db.password"));
+		
+		System.out.println("url = " + url);
+		// dataSource.setDriverClass(driverClass);
+		// dataSource.setUrl(url);
+		// dataSource.setUsername(username);
+		// dataSource.setPassword(password);
 		
 		
 		return dataSource;
