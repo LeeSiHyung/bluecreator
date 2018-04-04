@@ -1,12 +1,9 @@
 package springbook.dao;
 
-import java.sql.Driver;
-
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -51,17 +48,19 @@ public class AppContext {
 	@Resource
 	Environment env; // @Autowired가 안되는 현상은 확인 필요.
 	
-	@Value("${db.driverClass]")
-	Class<? extends Driver> driverClass;
-	
-	@Value("${db.url}")
-	String url;
-	
-	@Value("${db.username}")
-	String username;
-	
-	@Value("${db.password}")
-	String password;
+	/** ********************** **/
+	// @Value("${db.driverClass}") // AppContext내에서 @Value가 null로 오는 현상 확인 필요. UserDaoTest에서는 값이 정상으로 들어감
+	// Class<? extends Driver> driverClass;
+	// 	
+	// @Value("${db.url}")
+	// String url;
+	// 
+	// @Value("${db.username}")
+	// String username;
+	// 
+	// @Value("${db.password}")
+	// String password;
+	/** ********************** **/
 
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer(){
@@ -79,7 +78,6 @@ public class AppContext {
 		// dataSource.setUsername("toby");
 		// dataSource.setPassword("123qwe!@");
 		
-		
 		try {
 			dataSource.setDriverClass((Class<? extends java.sql.Driver>) Class.forName(env.getProperty("db.driverClass")));
 		} catch (ClassNotFoundException e) {
@@ -91,12 +89,10 @@ public class AppContext {
 		dataSource.setUsername(env.getProperty("db.username"));
 		dataSource.setPassword(env.getProperty("db.password"));
 		
-		System.out.println("url = " + url);
 		// dataSource.setDriverClass(driverClass);
 		// dataSource.setUrl(url);
 		// dataSource.setUsername(username);
 		// dataSource.setPassword(password);
-		
 		
 		return dataSource;
 	}

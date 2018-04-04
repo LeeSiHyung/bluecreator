@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import static springbook.service.UserServiceImpl.MIN_LOGOUT_FOR_SILVER;
 import static springbook.service.UserServiceImpl.MIN_RECOMMEND_FOR_GOLD;
 
+import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DuplicateKeyException;
@@ -92,6 +94,20 @@ public class UserDaoTest {
 	// 빈 이름을 이용해서 실제 빈과 빈 클래스 정보 등도 조회해볼 수 있다.
 	DefaultListableBeanFactory bf;
 	
+	/** ********************** **/
+	@Value("${db.driverClass}") // @Value가 null로 오는 현상 확인 필요.
+	Class<? extends Driver> driverClass;
+		
+	@Value("${db.url}")
+	String url;
+	
+	@Value("${db.username}")
+	String username;
+	
+	@Value("${db.password}")
+	String password;
+	/** ********************** **/
+	
 	@Before
 	public void setUp() {
 		//this.dao = this.context.getBean("userDao", UserDaoJdbc.class);
@@ -109,6 +125,13 @@ public class UserDaoTest {
 				);
 	}
 	
+	@Test 
+	public void valueAnnotationTest(){
+		System.out.println("driverClass : " + driverClass);
+		System.out.println("url : " + url);
+		System.out.println("username : " + username);
+		System.out.println("password : " + password);
+	}
 
 	// User 오브젝트의 내용을 비교하는 검증 코드, 테스트내에서 반복적으로 사용되므로 분리
 	private void checkSameUser(User user1, User user2) {
