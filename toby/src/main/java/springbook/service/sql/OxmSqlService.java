@@ -65,7 +65,8 @@ public class OxmSqlService implements SqlService{
 		//private final static String DEFAULT_SQLMAP_FILE = "sqlmap.xml";
 		//private String sqlmapFile = DEFAULT_SQLMAP_FILE;
 		
-		private Resource sqlmap = new ClassPathResource("sqlmap.xml", getClass());
+		//private Resource sqlmap = new ClassPathResource("sqlmap.xml", getClass());
+		private Resource sqlmap = new ClassPathResource("/springbook/service/sql/sqlmap.xml");
 
 		public void setUnmarshaller(Unmarshaller unmarshaller) {
 			this.unmarshaller = unmarshaller;

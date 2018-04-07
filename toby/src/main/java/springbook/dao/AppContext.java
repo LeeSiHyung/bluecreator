@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.mail.MailSender;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import springbook.service.DummyMailSender;
 import springbook.service.UserService;
 import springbook.service.UserServiceImpl.TestUserService;
+import springbook.service.sql.SqlMapConfig;
 
 @Configuration
 // @ImportResource 애노테이션을 이용하면 DI 설정정보에서 XML의 설정정보를 가져오게 만들 수 있다.
@@ -34,7 +36,7 @@ import springbook.service.UserServiceImpl.TestUserService;
 @Import({ SqlServiceContext.class}) // 중첩 멤버클래스로 지정하면 TestAppContext, ProductionAppContext 삭제 가능하다
 
 @PropertySource("/database.properties")
-public class AppContext {
+public class AppContext implements SqlMapConfig{
 
 	// @Autowired
 	// SqlService sqlService;
@@ -66,6 +68,18 @@ public class AppContext {
 	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer(){
 		return new PropertySourcesPlaceholderConfigurer();
 	}
+	
+
+	@Override
+	public org.springframework.core.io.Resource getSqlMapResource() {
+		return new ClassPathResource("sqlmap.xml", SqlMapConfig.class);
+	}
+
+	
+	// @Bean
+	// public SqlMapConfig sqlMapConfig(){
+	// 	return new UserSqlMapConfig();
+	// }
 	
 	@Bean
 	public DataSource dataSource() {
