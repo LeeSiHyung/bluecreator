@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -33,8 +32,9 @@ import springbook.service.sql.SqlMapConfig;
 // SqlServiceContext는 AppContext에 포함되는 보조 설정정보로 사용
 // 프로파일을 적용하면 모든 설정 클래스를 부담 없이 메인 설정 클래스에서 @Import해도 된다는 장점이 있다.
 //@Import({ SqlServiceContext.class, TestAppContext.class,ProductionAppContext.class })
-@Import({ SqlServiceContext.class}) // 중첩 멤버클래스로 지정하면 TestAppContext, ProductionAppContext 삭제 가능하다
+//@Import({ SqlServiceContext.class}) // 중첩 멤버클래스로 지정하면 TestAppContext, ProductionAppContext 삭제 가능하다
 
+@EnableSqlService
 @PropertySource("/database.properties")
 public class AppContext implements SqlMapConfig{
 
