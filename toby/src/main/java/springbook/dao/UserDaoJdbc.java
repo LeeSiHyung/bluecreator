@@ -22,9 +22,9 @@ public class UserDaoJdbc implements UserDao{
 	@Autowired
 	private SqlService sqlService;
 	
-	//public void setSqlService(SqlService sqlService) {
-	//	this.sqlService = sqlService;
-	//}
+	public void setSqlService(SqlService sqlService) {
+		this.sqlService = sqlService;
+	}
 
 	//private Map<String, String> sqlMap;
 	//public void setSqlMap(Map<String, String> sqlMap) {
