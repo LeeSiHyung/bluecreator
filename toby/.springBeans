@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beansProjectDescription>
 	<version>1</version>
-	<pluginVersion><![CDATA[3.8.4.201703310634-RELEASE]]></pluginVersion>
+	<pluginVersion><![CDATA[3.9.4.201804120850-RELEASE]]></pluginVersion>
 	<configSuffixes>
-		<configSuffix><![CDATA[xml]]></configSuffix>
+		<configSuffix><![CDATA[java]]></configSuffix>
 	</configSuffixes>
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
-		<config>src/main/java/springbook/learningtest/spring/FactoryBeanTest-context.xml</config>
-		<config>src/main/java/springbook/learningtest/oxm/OxmTest-context.xml</config>
+		<config>java:springbook.dao.AppContext</config>
+		<config>src/main/resources/test-applicationContext.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
