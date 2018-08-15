@@ -9,10 +9,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
-import org.springframework.beans.factory.support.PropertiesBeanDefinitionReader;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -84,7 +84,6 @@ public class IoCTest {
 		hello.print();
 		
 		assertThat(ac.getBean("printer").toString(), is("Hello Spring"));
-		
 	}
 	
 	
@@ -106,5 +105,20 @@ public class IoCTest {
 	// 	assertThat(ac.getBean("printer").toString(), is("Hello Spring"));
 	// 	
 	// }
+	
+	
+	@Test
+	public void genericApplicationContext3() {
+		
+		GenericApplicationContext ac = new GenericXmlApplicationContext(
+				"springbook2/learningtest/ioc/genericApplicationContext.xml");
+		
+		Hello hello = ac.getBean("hello", Hello.class);
+		hello.print();
+		
+		assertThat(ac.getBean("printer").toString(), is("Hello Spring"));
+		
+	}
+	
 
 }
