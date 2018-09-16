@@ -13,11 +13,14 @@ public class StreamTest {
 		int start = firstPrintableCharacter;
 		while(true) {
 			for(int i = start; i < start + numberOfCharacterPerLine; i++) {
-				out.write(
-						((i - firstPrintableCharacter) % numberOfPrintableCharacters) 
-						+ firstPrintableCharacter);
+				out.write(((i - firstPrintableCharacter) % numberOfPrintableCharacters)  + firstPrintableCharacter);
 			}
+			out.write('\r'); // 캐리지 리턴
+			out.write('\n'); // 라인피드
+			
+			start = ((start + 1) - firstPrintableCharacter) % numberOfPrintableCharacters + firstPrintableCharacter;
 		}
+		
 	}
 
 	public static void main(String[] args) {
@@ -34,10 +37,14 @@ public class StreamTest {
 		
 		int start = firstPrintableCharacter;
 		for(int i = start; i < start + numberOfCharacterPerLine; i++) {
-			System.out.print(i + "-");
-			System.out.print((i - firstPrintableCharacter) + "-");
+			// System.out.print(i + "-");
+			// System.out.print((i - firstPrintableCharacter) + "-");
 			System.out.print((i - firstPrintableCharacter) % numberOfPrintableCharacters + "-");
-			System.out.println(((i - firstPrintableCharacter) % numberOfPrintableCharacters) + firstPrintableCharacter);
+			// System.out.println(((i - firstPrintableCharacter) % numberOfPrintableCharacters) + firstPrintableCharacter);
+			
+			System.out.print((start + 1) - firstPrintableCharacter + "-");
+			start = ((start + 1) - firstPrintableCharacter) % numberOfPrintableCharacters + firstPrintableCharacter;
+			System.out.println(start);
 		}
 		
 	}
