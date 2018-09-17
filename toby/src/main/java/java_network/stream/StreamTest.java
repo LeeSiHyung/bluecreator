@@ -1,5 +1,7 @@
 package java_network.stream;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -22,27 +24,89 @@ public class StreamTest {
 		}
 		
 	}
-
-	public static void main(String[] args) {
-
-		// System.out.println(33 % 94);
-		// System.out.println(0 % 94);
-		// System.out.println(66 % 94);
-		// System.out.println((94 * 2 + 93) % 94);
-		// System.out.println(94 - (33 * 2));
+	
+	public static void generateCharacters2(OutputStream out) throws IOException{
 		
 		int firstPrintableCharacter = 33;
 		int numberOfPrintableCharacters = 94;
+		int numberOfCharactersPerLine = 72;
+		
+		int start = firstPrintableCharacter;
+		byte[] line = new byte[numberOfCharactersPerLine + 2];
+		// + 2는 캐리지리턴과 라인피드를 위함이다.
+		
+		while(true) {
+			for(int i = start; i < start + numberOfCharactersPerLine; i++) {
+				// 33 ~ 104
+				line[i-start] = (byte) ((i - firstPrintableCharacter) % numberOfPrintableCharacters + firstPrintableCharacter); 
+			}
+			
+			line[72] = (byte) 'r';
+			line[73] = (byte) 'n';
+			
+			out.write(line);
+			
+			// 34 ~ 105
+			start = ((start + 1) - firstPrintableCharacter) % numberOfPrintableCharacters + firstPrintableCharacter;
+			
+			// 33에서 ~ (33 + 94 - 1) 즉 126이 될 때까지 반복한다. 
+		}
+		
+		
+		
+	}
+	
+	
+	// 인스턴스 해체 패턴
+	public void fileOutputStream() {
+		OutputStream out = null;
+		
+		try {
+			out = new FileOutputStream("/tmp/data.txt");
+			
+		}
+		catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
+		finally {
+			if(out != null) {
+				try {
+					out.close();
+				}catch (IOException ex2) {
+					// 무시한다.
+				}
+			}
+		}
+	}
+	
+	
+	// try-with-resources
+	public void fileOutputStream2() {
+		// AutoCloseable 객체
+		try(OutputStream out = new FileOutputStream("/tmp/data.txt")){
+			
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getMessage());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	public static void main(String[] args) {
+
+		int firstPrintableCharacter = 33;
+		int numberOfPrintableCharacters = 94;
 		int numberOfCharacterPerLine = 72;
+		
 		
 		int start = firstPrintableCharacter;
 		for(int i = start; i < start + numberOfCharacterPerLine; i++) {
 			// System.out.print(i + "-");
 			// System.out.print((i - firstPrintableCharacter) + "-");
-			System.out.print((i - firstPrintableCharacter) % numberOfPrintableCharacters + "-");
-			// System.out.println(((i - firstPrintableCharacter) % numberOfPrintableCharacters) + firstPrintableCharacter);
+			// System.out.print((i - firstPrintableCharacter) % numberOfPrintableCharacters + "-");
+			System.out.print(((i - firstPrintableCharacter) % numberOfPrintableCharacters) + firstPrintableCharacter + "-");
 			
-			System.out.print((start + 1) - firstPrintableCharacter + "-");
+			// System.out.print((start + 1) - firstPrintableCharacter + "-");
 			start = ((start + 1) - firstPrintableCharacter) % numberOfPrintableCharacters + firstPrintableCharacter;
 			System.out.println(start);
 		}
