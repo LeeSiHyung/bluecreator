@@ -1,8 +1,6 @@
 package springbook2.learningtest.ioc;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
@@ -12,6 +10,7 @@ import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.context.support.StaticApplicationContext;
@@ -19,6 +18,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import springbook2.learningtest.ioc.bean.AnnotatedHello;
+import springbook2.learningtest.ioc.config.AnnotatedHelloConfig;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -143,6 +145,47 @@ public class IoCTest {
 		
 		hello.print();
 		assertThat(printer.toString(), is("Hello Child"));
+		
+	}
+	
+	
+	@Test
+	public void simpleBeanScanning() {
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(
+				"springbook2.learningtest.ioc.bean");
+		
+		AnnotatedHello hello  = ctx.getBean("myAnnotatedHello", AnnotatedHello.class);
+		
+		assertThat(hello, is(notNullValue()));
+		
+	}
+	
+	@Test
+	public void simpleBeanFactory() {
+		ApplicationContext ctx = new AnnotationConfigApplicationContext("springbook2.learningtest.ioc");
+		
+		// 스테레오타입 애노테이션과 빈 스캐너를 이용한 빈 등록
+		AnnotatedHello hello  = ctx.getBean("myAnnotatedHello", AnnotatedHello.class);
+		assertThat(hello, is(notNullValue()));
+		
+	}
+	
+	
+	@Test
+	public void simpleBeanFactory2() {
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(AnnotatedHelloConfig.class);
+		
+		// 스테레오타입 애노테이션과 빈 스캐너를 이용한 빈 등록
+		AnnotatedHello hello  = ctx.getBean("annotatedHello", AnnotatedHello.class);
+		assertThat(hello, is(notNullValue()));
+		
+		
+		// 자바 코드에 의한 빈 등록
+		AnnotatedHelloConfig config = ctx.getBean("annotatedHelloConfig", AnnotatedHelloConfig.class);
+		assertThat(config, is(notNullValue()));
+		
+		// 자바 코드에 의한 빈 안에서 생성된 빈과 위의 스테레오타입 애노테이션과 빈 스캐너를 이용한 빈과 같은 빈인지 비교
+		assertThat(config.annotatedHello(), is(sameInstance(hello)));
 		
 	}
 	
