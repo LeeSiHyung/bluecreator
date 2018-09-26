@@ -1,8 +1,10 @@
 package java_network.stream;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 public class StreamTest {
@@ -91,6 +93,61 @@ public class StreamTest {
 			System.err.println(e.getMessage());
 		}
 	}
+	
+	public void inputStream() {
+		
+		try(InputStream in = new FileInputStream("/tmp/input.txt")) {
+			
+			byte[] input = new byte[10];
+			for(int i=0; i < input.length; i++){
+				int b = in.read();
+				if(b == -1) break;
+				input[i] = (byte) b;
+			}
+			
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getMessage());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+		
+	}
+	
+	
+	public void inputStream2() {
+		try(InputStream in = new FileInputStream("/tmp/input.txt")){
+			
+			int bytesRead = 0;
+			int bytesToRead = 1024;
+			byte[] input = new byte[bytesToRead];
+			while(bytesRead < bytesToRead) {
+				int result = in.read(input, bytesRead, bytesToRead - bytesRead);
+				if(result == -1) break;
+				bytesRead += result;
+			}
+			
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getMessage());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+	
+	public void inputStream3() {
+		try(InputStream in = new FileInputStream("/tmp/input.txt")){
+			
+			int bytesAvailable = in.available();
+			byte[] input = new byte[bytesAvailable];
+			
+			int bytesRead = in.read(input, 0, bytesAvailable);
+			
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getMessage());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+	
 
 	public static void main(String[] args) {
 
