@@ -1,7 +1,12 @@
 package springbook2.learningtest.ioc;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
+
+import javax.sql.DataSource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +26,7 @@ import org.springframework.util.StringUtils;
 
 import springbook2.learningtest.ioc.bean.AnnotatedHello;
 import springbook2.learningtest.ioc.config.AnnotatedHelloConfig;
+import springbook2.learningtest.ioc.config.ServiceConfig;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -187,6 +193,14 @@ public class IoCTest {
 		// 자바 코드에 의한 빈 안에서 생성된 빈과 위의 스테레오타입 애노테이션과 빈 스캐너를 이용한 빈과 같은 빈인지 비교
 		assertThat(config.annotatedHello(), is(sameInstance(hello)));
 		
+	}
+	
+	
+	@Test
+	public void simpleBeanFactory3() {
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(ServiceConfig.class);
+		DataSource dataSource  = ctx.getBean("dataSource", DataSource.class);
+		assertThat(dataSource, is(notNullValue()));
 	}
 	
 
