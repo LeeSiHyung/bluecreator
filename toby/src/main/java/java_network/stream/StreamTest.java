@@ -1,5 +1,8 @@
 package java_network.stream;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -146,6 +149,51 @@ public class StreamTest {
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
+	}
+	
+	public void filter() {
+		
+		
+		/** 같은 소스에 연결된 다른 스트림을 섞어서 호출할 경우 필터 스트림의 몇가지 암묵적인 규칙을 위반할 수 있다 **/
+		/** 대부분의 경우에는 실제 읽고 쓰는 일을 하기 위해 필터 체인의 마지막 필터만을 사용해야 한다. **/
+		/** 이를 내장된 입력 스트림의 레퍼런스를 의도적으로 덮어쓰는 방법이 있다. **/
+		// FileInputStream fin;
+		// try {
+		// 	fin = new FileInputStream("/tmp/input.txt");
+		// 	BufferedInputStream bin = new BufferedInputStream(fin);
+		// } catch (FileNotFoundException e) {
+		// 	System.err.println(e.getMessage());
+		// }
+		
+		InputStream is;
+		try {
+			// is만 사용한다. FileInputStream, BufferedInputStream를 섞어서 사용하지 못하도록 InpuStream으로만 접근 가능하게 한다.
+			
+			is = new FileInputStream("/tmp/input.txt");
+			is = new BufferedInputStream(is);
+			
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getMessage());
+		}
+		
+		try(InputStream in = new BufferedInputStream(new FileInputStream("/tmp/input.txt"))){
+			
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getMessage());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+		
+		
+		try(DataOutputStream dout = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("data.txt")))){
+			
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getMessage());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+		
+		
 	}
 	
 
