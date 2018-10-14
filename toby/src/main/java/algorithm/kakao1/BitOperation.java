@@ -1,4 +1,4 @@
-package algorithm.kakao;
+package algorithm.kakao1;
 
 public class BitOperation {
 	
