@@ -19,6 +19,10 @@ public class Hello {
 	public void setPrinter(Printer printer) {
 		this.printer = printer;
 	}
+
+	public Printer getPrinter() {
+		return printer;
+	}
 	
 
 }
