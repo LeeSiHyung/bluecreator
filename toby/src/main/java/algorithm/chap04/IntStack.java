@@ -28,7 +28,7 @@ public class IntStack {
 		if(ptr >= max)
 			throw new OverflowIntStackException();
 		
-		// 현재 포인터 값을 return 하고 포이터를 ++ 해줌
+		// stk에 ptr 저장 후 ptr ++ 즉 0을 먼저 저장 한 후 1로 변환
 		return stk[ptr++] = x;
 	}
 	
@@ -36,7 +36,7 @@ public class IntStack {
 		if(ptr <= 0 )
 			throw new EmptyIntStackException();
 		
-		// 포인터 ptr을 감소시키고 감소시킨 값을 return 함
+		// push에서 했던 ptr++를 취소한 후에 stk[ptr]값을 리턴함 만약 ptr--로 한다면 ++ 됬던 값이 리턴되서 빈 값이 리턴됨
 		return stk[--ptr]; 
 	}
 	
@@ -86,5 +86,11 @@ public class IntStack {
 			}
 			System.out.println();
 		}
+	}
+	
+	public static void main(String[] args) {
+		int a = 0;
+		System.out.println(a++);
+		System.out.println(a--);
 	}
 }
