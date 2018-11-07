@@ -38,7 +38,7 @@ public class QuickSort2 {
 				rstack.push(pr);   
 			}
 			
-			if(pl < right) {
+			if(pl < right) {                                                                                                  
 				lstack.push(pl);
 				rstack.push(right);
 			}
