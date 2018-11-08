@@ -39,6 +39,7 @@ public class MergeSort {
 	}
 	
 	public static void main(String[] args) {
+		
 		Scanner stdIn = new Scanner(System.in);
 		
 		System.out.println("병합 정렬");
