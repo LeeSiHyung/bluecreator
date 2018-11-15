@@ -105,7 +105,9 @@ public class DblLinkedList<E> {
 	}
 	
 	public void removeCurrentNode() {
-		
+		if(!isEmpty()) {
+			
+		}
 	}
 	
 
