@@ -10,12 +10,10 @@ public class QuickSort {
 		a[idx2] = t;
 	}
 	
-	
 	static void quickSort(int[] a, int left, int right) {
-		
 		int pl = left;
 		int pr = right;
-		int x = a[(pl + pr) / 2]; //피벗 의 중앙 값
+		int x = a[(pl + pr) / 2];
 		
 		do {
 			while(a[pl] < x) pl++;
@@ -25,11 +23,11 @@ public class QuickSort {
 		}
 		while(pl <= pr);
 		
+		
 		if(left < pr) quickSort(a, left, pr);
 		if(pl < right) quickSort(a, pl, right);
 		
-	}                       
-	
+	}
 	
 	public static void main(String[] args) {
 		Scanner stdIn = new Scanner(System.in);
