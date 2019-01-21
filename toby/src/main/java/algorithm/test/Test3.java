@@ -10,6 +10,7 @@ public class Test3 {
 		System.out.println(solution(new int[]{6, 1, 11}));
 	}
 	
+	
 
 	
 	public static int[] solution(int[] numbers) {

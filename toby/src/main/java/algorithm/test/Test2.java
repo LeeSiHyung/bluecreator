@@ -17,6 +17,7 @@ public class Test2 {
         
         result = result - money;
         
+        
         return result;
     }
 	
