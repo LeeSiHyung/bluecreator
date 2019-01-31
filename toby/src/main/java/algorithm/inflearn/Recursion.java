@@ -18,6 +18,8 @@ public class Recursion {
 		System.out.println(search(new int[] {1,2,3,4,5,6,7,8,9}, 0, 8, 9));
 		// 최댓값 검색
 		System.out.println(findMax(new int[] {1, 100, 23, 45, 22, 101}, 0, 5));
+		// 이진검색
+		System.out.println(binarySearch(new String[] {"0", "1", "2", "3"}, "3", 0, 4));
 		
 	}
 	
@@ -86,6 +88,7 @@ public class Recursion {
 	
 	// 최댓값 검색
 	public static int findMax(int[] data, int begin, int end) {
+		// 최댓값을 검색하기 때문에 값은 무조건 존재하고, begin이 end까지 도달했다면 begin의 값을 리턴해준다.
 		if(begin == end) return data[begin];
 		else {
 			// middle을 통해서 검색 범위가 절반씩 줄어듬
@@ -98,7 +101,17 @@ public class Recursion {
 	
 	// 이진검색
 	public static int binarySearch(String[] items, String target, int begin, int end) {
-		
+		// 이진검색의 경우 값이 존재하지 않을 수 있다.
+		if(begin > end) return -1;
+		else {
+			int middle = (begin+end) / 2;
+			// int cond = items[middle].compareTo(target);
+			// ** 위의 로직은 오류 발생 기준이 되는 값 target을 기준으로 compareTo 함수를 호출해야 한다. **/
+			int cond = target.compareTo(items[middle]);
+			if(cond == 0) return middle;
+			else if(cond < 0) return binarySearch(items, target, begin, middle-1);
+			else return binarySearch(items, target, middle+1, end);
+		}
 	}
 
 }
