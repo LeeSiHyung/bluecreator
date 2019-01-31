@@ -1,4 +1,4 @@
-package algorithm.ebay;
+package coding_test.ebay;
 
 public class Test4 {
 

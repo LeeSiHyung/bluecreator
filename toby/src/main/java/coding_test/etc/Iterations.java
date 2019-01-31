@@ -1,4 +1,4 @@
-package coding_test;
+package coding_test.etc;
 
 public class Iterations {
 	public static void main(String[] args) {

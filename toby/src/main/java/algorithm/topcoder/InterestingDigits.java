@@ -1,4 +1,4 @@
-package algorithm2.chap01;
+package algorithm.topcoder;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package algorithm.ebay;
+package coding_test.ebay;
 
 import java.util.Arrays;
 import java.util.HashMap;

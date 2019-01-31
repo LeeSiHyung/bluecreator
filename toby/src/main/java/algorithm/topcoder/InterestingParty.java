@@ -1,4 +1,4 @@
-package algorithm2.chap01;
+package algorithm.topcoder;
 
 import java.util.HashMap;
 import java.util.Map;

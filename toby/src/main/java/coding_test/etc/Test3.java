@@ -1,4 +1,4 @@
-package coding_test.one;
+package coding_test.etc;
 
 public class Test3 {
 	public static void main(String[] args) {

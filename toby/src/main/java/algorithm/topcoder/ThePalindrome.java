@@ -1,4 +1,4 @@
-package algorithm2.chap01;
+package algorithm.topcoder;
 
 public class ThePalindrome {
 	
