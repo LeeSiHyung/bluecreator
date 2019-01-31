@@ -45,16 +45,11 @@ public class Recursion {
 	
 	// 2진수
 	public static void printInBinary(int n) {
-		if(n < 2) {
-			System.out.print(n);
-		}
+		if(n < 2) System.out.print(n);
 		else {
-			// 2로 나눈 값을 재귀
 			printInBinary(n/2);
-			// 2로 나눈 몫을 출력
 			System.out.print(n%2);
 		}
-		
 	}
 	
 	// 배열의 합
