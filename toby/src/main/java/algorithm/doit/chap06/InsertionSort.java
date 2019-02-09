@@ -11,12 +11,10 @@ public class InsertionSort {
 	}
 	
 	static void insertionSort(int[] a, int n) {
-		for(int i=0; i < n; i++){
+		for(int i=0; i < n; i++) {
 			int j;
 			int tmp = a[i];
-			// for문은 i바로 앞의 값보다 큰지 비교
 			for(j=i; j > 0 && a[j-1] > tmp; j--) {
-				// 조건절이 없음, tmp보다 크다면 모두 shift
 				a[j] = a[j-1];
 			}
 			a[j] = tmp;
