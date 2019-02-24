@@ -4,12 +4,6 @@ import java.util.Arrays;
 
 public class InsertionSort {
 	
-	static void swap(int[] a, int idx1, int idx2) {
-		int t = a[idx1];
-		a[idx1] = a[idx2];
-		a[idx2] = t;
-	}
-	
 	static void insertionSort(int[] a, int n) {
 		for(int i=0; i < n; i++) {
 			int j;
